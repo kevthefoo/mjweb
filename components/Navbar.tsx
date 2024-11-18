@@ -13,7 +13,7 @@ export default function Navbar() {
                         <Link href="/explore">Explore</Link>
                     </li>
                     <li>
-                        <Link href="/jobs">Creation</Link>
+                        <Link href="/creation">Creation</Link>
                     </li>
                     <li>
                         <Link href="/gpt">GPT</Link>
