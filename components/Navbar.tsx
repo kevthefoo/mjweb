@@ -3,8 +3,8 @@ import { SignOutButton } from "@clerk/nextjs";
 
 export default function Navbar() {
     return (
-        <header className="flex flex-col justify-between border-2 border-white h-screen px-8 pt-16 pb-8">
-            <Link href="/home">
+        <header className="flex flex-col justify-between border-2 border-white h-screen px-8 pt-16 pb-8 w-56">
+            <Link href="/home" className="border-2 border-white">
                 <div>Meet Johnny</div>
             </Link>
             <nav className="">
