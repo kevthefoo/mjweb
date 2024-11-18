@@ -1,4 +1,4 @@
-import { SignInButton } from "@clerk/nextjs";
+import SignInButtonComponent from "@/components/SignInButtonComponent";
 
 export default function Home() {
     return (
@@ -7,11 +7,7 @@ export default function Home() {
                 <h1 className="landing_page_title">
                     Unlock Your Creativity with New Era Generative AI
                 </h1>
-                <SignInButton mode="modal" forceRedirectUrl="/home">
-                    <button className="landing_page_enter_button border-2 border-white mt-8 py-2 px-4 rounded-2xl hover:bg-indigo-800">
-                        Enter
-                    </button>
-                </SignInButton>
+                <SignInButtonComponent />
             </section>
         </main>
     );
