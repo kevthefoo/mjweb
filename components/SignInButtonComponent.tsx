@@ -1,8 +1,13 @@
 "use client";
 
-import { SignInButton } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { SignInButton, useUser } from "@clerk/nextjs";
 
 export default function SignInButtonComponent() {
+    const { user } = useUser();
+    if (user) {
+        redirect("/home");
+    }
     return (
         <SignInButton mode="modal" forceRedirectUrl="/home">
             <button

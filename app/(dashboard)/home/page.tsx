@@ -2,9 +2,9 @@ import { SignOutButton } from "@clerk/nextjs";
 
 export default async function Home() {
     return (
-        <main>
+        <section>
             THis is our home page
             <SignOutButton redirectUrl="/"></SignOutButton>
-        </main>
+        </section>
     );
 }

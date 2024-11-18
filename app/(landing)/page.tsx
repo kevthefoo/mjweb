@@ -1,6 +1,6 @@
 import SignInButtonComponent from "@/components/SignInButtonComponent";
 
-export default function Home() {
+export default function LandingPage() {
     return (
         <main>
             <section className="landing_page_section min-h-screen flex flex-col gap-4 justify-center items-center bg-center bg-no-repeat	bg-cover text-center px-12 bg-[url('/inter.svg')]">
