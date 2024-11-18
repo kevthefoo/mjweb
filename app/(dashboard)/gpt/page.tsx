@@ -34,7 +34,7 @@ export default function GPT() {
 
     return (
         <section className="h-full w-full flex flex-col justify-between">
-            <div className="flex-grow p-4 overflow-y-auto border-2 border-red-500">
+            <div className="flex-grow p-4 overflow-y-auto border-2 border-red-500 bg-no-repeat bg-center bg-[url('/gptLogo.png')] bg-[length:100px_100px]">
                 {messages.map((message, index) => (
                     <div key={index} className="mb-2">
                         {message}
