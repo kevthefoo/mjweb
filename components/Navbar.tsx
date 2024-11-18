@@ -13,6 +13,9 @@ export default function Navbar() {
                         <Link href="/explore">Explore</Link>
                     </li>
                     <li>
+                        <Link href="/explore">Features</Link>
+                    </li>
+                    <li>
                         <Link href="/creation">Creation</Link>
                     </li>
                     <li>
