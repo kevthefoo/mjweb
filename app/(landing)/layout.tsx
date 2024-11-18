@@ -16,7 +16,7 @@ export default function LandingPageLayout({
         <ClerkProvider>
             <html lang="en">
                 <body
-                    className="antialiased"
+                    className="antialiased h-screen w-screen"
                 >
                     {children}
                 </body>

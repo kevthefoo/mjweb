@@ -19,7 +19,7 @@ export default function DashboardLayout({
         <ClerkProvider>
             <html lang="en">
                 <body
-                    className="antialiased flex"
+                    className="antialiased flex h-screen w-screen"
                 >
                     <Navbar />
                     <main className="">{children}</main>
