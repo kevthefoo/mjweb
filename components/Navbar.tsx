@@ -90,7 +90,7 @@ export default function Navbar() {
                 <SignOutButton redirectUrl="/">
                     <button className="flex items-center border-[0.5px] rounded-2xl py-2 px-4">
                         <FaSignOutAlt className="mr-2" />
-                        Sign Out
+                        <p>Sign Out</p>
                     </button>
                 </SignOutButton>
             </div>
