@@ -7,29 +7,43 @@ export default function GPT() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!input.trim()) return;
+
+        // Return if the input is empty
+        if (!input.trim()) {
+            return;
+        }
 
         // Add user's message to the chat
         setMessages((prevMessages) => [...prevMessages, `User: ${input}`]);
 
-        // Call GPT API (replace with your actual API call)
-        const response = await fetch("/api/gpt", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message: input }),
-        });
-        const data = await response.json();
+        try {
+            // Call GPT API (replace with your actual API call)
+            const response = await fetch("/api/gpt", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ message: input }),
+            });
 
-        // Add GPT's response to the chat
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            `GPT: ${data.response}`,
-        ]);
+            if (!response.ok) {
+                throw new Error("Failed to call GPT API");
+            }
 
-        // Clear the input field
-        setInput("");
+            const data = await response.json();
+            // Add GPT's response to the chat
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                `GPT: ${data.result.content}`,
+            ]);
+
+            // Clear the input field
+            setInput("");
+            console.log(response.status);
+        } catch (error) {
+            console.error(error);
+            return;
+        }
     };
 
     return (
