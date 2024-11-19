@@ -58,6 +58,12 @@ export default async function Features() {
                     />
                 </div>
                 <div className="flex justify-around items-center">
+                    <Image
+                        src={gptlogo}
+                        alt="gpt_logo"
+                        width={250}
+                        className="gpt_logo_image"
+                    />
                     <div>
                         <h1> Unlimited GPT-4o Use</h1>
                         <p>
@@ -76,12 +82,6 @@ export default async function Features() {
                             newest model released.
                         </p>
                     </div>
-                    <Image
-                        src={gptlogo}
-                        alt="gpt_logo"
-                        width={250}
-                        className="gpt_logo_image"
-                    />
                 </div>
             </div>
         </section>
