@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SignOutButton } from "@clerk/nextjs";
+import SignOutButtonComponent from "./SignOutButtonComponent";
 import {
     FaRegCompass,
     FaPalette,
@@ -8,7 +8,6 @@ import {
     FaBookmark,
     FaTools,
     FaBolt,
-    FaSignOutAlt,
 } from "react-icons/fa";
 
 export default function Navbar() {
@@ -87,12 +86,7 @@ export default function Navbar() {
                 </ul>
             </nav>
             <div className="h-8">
-                <SignOutButton redirectUrl="/">
-                    <button className="flex items-center border-[0.5px] rounded-2xl py-2 px-4">
-                        <FaSignOutAlt className="mr-2" />
-                        <p>Sign Out</p>
-                    </button>
-                </SignOutButton>
+                <SignOutButtonComponent />
             </div>
         </header>
     );
