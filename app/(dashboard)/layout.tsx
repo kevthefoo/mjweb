@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from '@clerk/themes'
 
 export const metadata: Metadata = {
     title: "Meet Johnny",
@@ -14,7 +15,11 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <ClerkProvider>
+        <ClerkProvider
+            appearance={{
+                baseTheme: dark,
+            }}
+        >
             <html lang="en">
                 <body className="antialiased flex h-screen w-screen">
                     <Navbar />
