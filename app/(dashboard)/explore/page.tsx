@@ -1,4 +1,4 @@
-// import Image from "next/image";
+import Image from "next/image";
 // import image1 from "@/assets/1.png";
 // import image2 from "@/assets/2.png";
 // import image3 from "@/assets/3.png";
@@ -14,12 +14,14 @@ export default async function Explore() {
         <section className="w-full h-full overflow-y-scroll">
             <div className="columns-5 gap-0">
                 <div className="border-2 border-white">
-                    {/* <Image
-                        src="https://cdn.midjourney.com/387af603-9e45-41b9-bb68-873229c3b8fe/0_0_384_N.webp?method=shortest&qst=6&quality=15"
-                        fill={true}
+                    <Image
+                        src="https://mjgallery.s3.us-east-1.amazonaws.com/0_0_384_N.webp"
+                        alt="ad"
+                        height={100}
+                        width={100}
                         priority={true}
-                        alt=""
-                    /> */}
+                        style={{ height: "100%", width: "100%" }}
+                    />
                 </div>
             </div>
         </section>
