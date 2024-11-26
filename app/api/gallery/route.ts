@@ -30,8 +30,6 @@ export async function GET() {
             }) || []
         );
         
-        // console.log("images", images);
-
         return NextResponse.json({ images:images });
     } catch (error) {
         console.error("Error fetching images from S3:", error);

@@ -2,14 +2,19 @@
 import { useState } from "react";
 import Image from "next/image";
 
+type ImageType = {
+    url: string;
+    metadata: Record<string, null>;
+};
+
 export default function Explore() {
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState<ImageType[]>([]);
 
     const fetchImage = async () => {
         try {
             const response = await fetch("/api/gallery");
             if (!response.ok) {
-                throw new Error(data.error);
+                throw new Error("Failed to fetch images");
             }
             const data = await response.json();
             const image_data = data.images;
@@ -17,7 +22,6 @@ export default function Explore() {
            
         } catch (error) {
             console.error(error);
-            console.log("fuckkkkkkkkkkkk");
             return;
         }
     };
