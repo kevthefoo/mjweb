@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { S3Client, ListObjectsV2Command, HeadObjectCommand } from "@aws-sdk/client-s3";
 
-export async function GET(req: Request) {
+export async function GET() {
     try {
         const client = new S3Client({ region: "us-east-1" });
         console.log("Fetching images from S3");
