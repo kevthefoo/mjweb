@@ -8,7 +8,7 @@ export async function GET(req: Request) {
 
         const input = {
             Bucket: "mjgallery",
-            MaxKeys:1,
+            MaxKeys:100,
         };
 
         const command = new ListObjectsV2Command(input);
