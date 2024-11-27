@@ -1,9 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+interface Message {
+    role: string;
+    content: string;
+}
 
 export default function GPT() {
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
+
+    // Load messages from localStorage when the component mounts
+    useEffect(() => {
+        const savedMessages = localStorage.getItem("gptMessages");
+        if (savedMessages) {
+            setMessages(JSON.parse(savedMessages));
+        }
+    }, []);
+
+    // Save messages to localStorage whenever they are updated
+    useEffect(() => {
+        localStorage.setItem("gptMessages", JSON.stringify(messages));
+    }, [messages]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -13,17 +31,29 @@ export default function GPT() {
             return;
         }
 
-        // Add user's message to the chat
-        setMessages((prevMessages) => [...prevMessages, `User: ${input}`]);
+        // Create the new message
+        const newMessage = { role: "user", content: input };
 
+        // Add user's message to the chat
+        setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages, newMessage];
+            // Call GPT API with the updated messages
+            callGptApi(updatedMessages);
+            return updatedMessages;
+        });
+
+        // Clear the input field
+        setInput("");
+    };
+
+    const callGptApi = async (updatedMessages: Message[]) => {
         try {
-            // Call GPT API (replace with your actual API call)
             const response = await fetch("/api/gpt", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ message: input }),
+                body: JSON.stringify({ message: updatedMessages }),
             });
 
             if (!response.ok) {
@@ -34,37 +64,50 @@ export default function GPT() {
             // Add GPT's response to the chat
             setMessages((prevMessages) => [
                 ...prevMessages,
-                `GPT: ${data.result.content}`,
+                { role: "assistant", content: data.result.content },
             ]);
-
-            // Clear the input field
-            setInput("");
-            console.log(response.status);
         } catch (error) {
             console.error(error);
-            return;
         }
     };
 
+    const handleClear = () => {
+        setMessages([]);
+        localStorage.removeItem("gptMessages");
+    };
+
     return (
-        <section className="h-full w-full flex flex-col justify-between">
-            <div className="flex-grow p-4 overflow-y-auto border-2 border-red-500 bg-no-repeat bg-center bg-[url('/gptLogo.png')] bg-[length:100px_100px]">
+        <section className="h-full w-full flex flex-col justify-between bg-neutral-800">
+            <div className="flex flex-col h-full p-4 overflow-y-auto  bg-no-repeat bg-center bg-[url('/gptLogo.png')] bg-[length:100px_100px] bg-neutral-800">
                 {messages.map((message, index) => (
-                    <div key={index} className="mb-2">
-                        {message}
+                    <div
+                        key={index}
+                        className={`mb-2 py-4 px-8 rounded-3xl max-w-[45%] ${
+                            message.role === "user"
+                                ? "bg-neutral-700 self-end"
+                                : "bg-neutral-700 self-start"
+                        }`}
+                    >
+                        <strong>
+                            {message.role === "assistant" ? "GPT" : ""}
+                        </strong>
+                        <p className="leading-8">
+
+                        {message.content}
+                        </p>
                     </div>
                 ))}
             </div>
             <form
                 onSubmit={handleSubmit}
-                className="p-4 border-2 border-gray-200"
+                className="p-4 border-2 border-gray-200 rounded-3xl bg-neutral-800"
             >
-                <div className="flex gap-4">
+                <div className="flex gap-4 ">
                     <input
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        className="flex-grow p-2 border border-gray-300 rounded-md bg-gray-800"
+                        className="flex-grow p-2 border border-gray-300 rounded-md bg-neutral-700"
                         placeholder="Type your message..."
                     />
                     <button
@@ -72,6 +115,13 @@ export default function GPT() {
                         className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                     >
                         Send
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleClear}
+                        className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    >
+                        Clear
                     </button>
                 </div>
             </form>

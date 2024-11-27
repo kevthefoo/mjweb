@@ -71,6 +71,18 @@ export default function Explore() {
         }
     };
 
+    const handleCopyToClipboard = (prompt: string, tags: string) => {
+        const textToCopy = `${prompt}\n${tags}`;
+        navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+                alert("Prompt copied to clipboard");
+            })
+            .catch(() => {
+                console.error("Failed to copy the prompt");
+            });
+    };
+
     useEffect(() => {
         if (isModalOpen) {
             document.body.style.overflow = "hidden";
@@ -87,11 +99,11 @@ export default function Explore() {
         <section
             className={
                 isModalOpen
-                    ? " border-2 border-green-400 no-scrollbar h-full"
-                    : "h-full border-2 border-green-400 overflow-y-scroll no-scrollbar"
+                    ? " no-scrollbar h-full"
+                    : "h-full  overflow-y-scroll"
             }
         >
-            <div className="relative columns-5 gap-0 border-4 border-red-700">
+            <div className="relative columns-5 gap-0  ">
                 {images.map((image, index) => (
                     <div
                         key={index}
@@ -115,28 +127,58 @@ export default function Explore() {
 
                 {isModalOpen && selectedImage && (
                     <div
-                        className="absolute top-0 bottom-0 right-0 left-0 flex bg-black bg-opacity-90  border-2 border-red-500 w-full"
+                        className="absolute top-0 bottom-0 right-0 left-0 flex bg-black bg-opacity-90 w-full h-screen py-4    "
                         onClick={handleOverlayClick}
                     >
-                        <div className="relative border-2 border-white  p-4 w-2/3 h-screen">
+                        <div
+                            className="absolute z-50 cursor-pointer font-bold p-8 right-0 top-0 w-8 h-8 flex justify-center items-center text-2xl"
+                            onClick={handleOverlayClick}
+                        >
+                            X
+                        </div>
+                        <div
+                            className="relative p-4 w-2/3 h-full "
+                            onClick={handleOverlayClick}
+                        >
                             <Image
                                 src={selectedImage.url}
                                 alt={selectedImage.metadata.job_id}
                                 fill={true}
-                                className="object-contain"
+                                className="object-contain  "
                             />
                         </div>
-                        <div className="border-2 border-blue-400 w-1/3 p-4">
-                            <p>{selectedImage.metadata.prompt}</p>
-                            <div className="flex gap-4">
+                        <div
+                            className="  w-1/3 p-4"
+                            onClick={handleOverlayClick}
+                        >
+                            <h1 className="mb-4">Prompt</h1>
+                            <p className="mb-4">
+                                {selectedImage.metadata.prompt}
+                            </p>
+
+                            <div className="flex gap-4 flex-wrap mb-4">
                                 {selectedImage.metadata.tags
                                     .split(",")
                                     .map((tag, index) => (
-                                        <div key={index} className="border-2 border-white">
+                                        <div
+                                            key={index}
+                                            className="border-2 border-white rounded-lg p-1"
+                                        >
                                             {tag}
                                         </div>
                                     ))}
                             </div>
+                            <button
+                                onClick={() =>
+                                    handleCopyToClipboard(
+                                        selectedImage.metadata.prompt,
+                                        selectedImage.metadata.tags
+                                    )
+                                }
+                                className="p-1 border-2 border-white rounded-lg bg-blue-500 hover:bg-blue-700"
+                            >
+                                Copy This Prompt
+                            </button>
                         </div>
                     </div>
                 )}
