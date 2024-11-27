@@ -12,7 +12,7 @@ import {
 
 export default function Navbar() {
     return (
-        <header className="flex flex-col justify-between border-2 border-white h-screen px-8 pt-16 pb-8 w-56">
+        <header className="flex flex-col justify-between border-2 border-white h-screen px-8 pt-16 pb-8 w-1/6">
             <Link href="/home" className="border-2 border-white">
                 <div>Meet Johnny</div>
             </Link>

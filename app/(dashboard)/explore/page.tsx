@@ -87,17 +87,11 @@ export default function Explore() {
         <section
             className={
                 isModalOpen
-                    ? "h-full border-2 border-green-400"
-                    : "h-full border-2 border-green-400 overflow-y-scroll"
+                    ? " border-2 border-green-400 no-scrollbar h-full"
+                    : "h-full border-2 border-green-400 overflow-y-scroll no-scrollbar"
             }
         >
-            <div
-                className={
-                    isModalOpen
-                        ? "relative columns-5 gap-0 border-4 border-blue-700 "
-                        : "relative columns-5 gap-0 border-4 border-red-700"
-                }
-            >
+            <div className="relative columns-5 gap-0 border-4 border-red-700">
                 {images.map((image, index) => (
                     <div
                         key={index}
@@ -121,7 +115,7 @@ export default function Explore() {
 
                 {isModalOpen && selectedImage && (
                     <div
-                        className="absolute inset-0 flex items-center bg-black bg-opacity-90  border-2 border-red-500 h-screen"
+                        className="absolute top-0 bottom-0 right-0 left-0 flex bg-black bg-opacity-90  border-2 border-red-500 w-full"
                         onClick={handleOverlayClick}
                     >
                         <div className="relative border-2 border-white  p-4 w-2/3 h-screen">
@@ -131,6 +125,18 @@ export default function Explore() {
                                 fill={true}
                                 className="object-contain"
                             />
+                        </div>
+                        <div className="border-2 border-blue-400 w-1/3 p-4">
+                            <p>{selectedImage.metadata.prompt}</p>
+                            <div className="flex gap-4">
+                                {selectedImage.metadata.tags
+                                    .split(",")
+                                    .map((tag, index) => (
+                                        <div key={index} className="border-2 border-white">
+                                            {tag}
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
                     </div>
                 )}
