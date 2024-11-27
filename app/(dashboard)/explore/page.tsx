@@ -99,8 +99,8 @@ export default function Explore() {
         <section
             className={
                 isModalOpen
-                    ? " no-scrollbar h-full"
-                    : "h-full  overflow-y-scroll"
+                    ? " no-scrollbar h-full bg-neutral-800"
+                    : "h-full  overflow-y-scroll bg-neutral-800"
             }
         >
             <div className="relative columns-5 gap-0  ">

@@ -1,16 +1,16 @@
 export default async function Account() {
     return (
-        <section className="flex flex-col text-center pt-16 px-20 w-full h-full pb-12">
+        <section className="flex flex-col text-center pt-16 px-20 w-full h-full pb-12 bg-neutral-800">
             <h1 className="text-3xl">Manage Subscription</h1>
             <h3 className="text-gray-500 mb-16">
-                Choose the plan that works for you
+                Change or cancel your plan anytime
             </h3>
             <div className="rounded-xl border-[1px] h-full px-8 pt-4 bg-zinc-900">
                 <div className="mb-8 flex justify-between items-center">
                     <h1 className="text-3xl">Your Plan</h1>
                     <div className="flex gap-4">
-                        <button className="border-[1px] rounded-full px-4 py-2">Change Plan</button>
-                        <button className="border-[1px] rounded-full px-4 py-2">Cancel Plan</button>
+                        <button className="border-[1px] rounded-full px-4 py-2 hover:bg-neutral-700">Change Plan</button>
+                        <button className="border-[1px] rounded-full px-4 py-2 hover:bg-neutral-700">Cancel Plan</button>
                     </div>
                 </div>
 
