@@ -9,7 +9,7 @@ interface Message {
 export default function GPT() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
-
+    const [isLoading, setIsLoading] = useState(false);
     // Load messages from localStorage when the component mounts
     useEffect(() => {
         const savedMessages = localStorage.getItem("gptMessages");
@@ -47,6 +47,7 @@ export default function GPT() {
     };
 
     const callGptApi = async (updatedMessages: Message[]) => {
+        setIsLoading(true);
         try {
             const response = await fetch("/api/gpt", {
                 method: "POST",
@@ -59,6 +60,8 @@ export default function GPT() {
             if (!response.ok) {
                 throw new Error("Failed to call GPT API");
             }
+
+            setIsLoading(false);
 
             const data = await response.json();
             // Add GPT's response to the chat
@@ -91,12 +94,14 @@ export default function GPT() {
                         <strong>
                             {message.role === "assistant" ? "GPT" : ""}
                         </strong>
-                        <p className="leading-8">
-
-                        {message.content}
-                        </p>
+                        <p className="leading-8">{message.content}</p>
                     </div>
                 ))}
+                {isLoading && (
+                    <div className="mb-2 py-4 px-8 rounded-3xl w-72 bg-neutral-700 self-start">
+                        <p className="leading-8 typing"></p>
+                    </div>
+                )}
             </div>
             <form
                 onSubmit={handleSubmit}

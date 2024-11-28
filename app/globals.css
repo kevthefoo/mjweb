@@ -52,3 +52,23 @@ body {
     scrollbar-color: #555 #2d2d2d; /* thumb color, track color */
     scrollbar-width: thin;
 }
+
+@keyframes typing {
+    0% {
+        content: "GPT is typing";
+    }
+    33% {
+        content: "GPT is typing.";
+    }
+    66% {
+        content: "GPT is typing..";
+    }
+    100% {
+        content: "GPT is typing...";
+    }
+}
+
+.typing::after {
+    content: "GPT is typing";
+    animation: typing 1.5s steps(4, end) infinite;
+}
