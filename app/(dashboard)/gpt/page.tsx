@@ -6,10 +6,12 @@ interface Message {
   content: string;
 }
 
+
 export default function GPT() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   // Load messages from localStorage when the component mounts
   useEffect(() => {
     const savedMessages = localStorage.getItem("gptMessages");
@@ -23,6 +25,7 @@ export default function GPT() {
     localStorage.setItem("gptMessages", JSON.stringify(messages));
   }, [messages]);
 
+  // Handle user's prompt submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -46,6 +49,7 @@ export default function GPT() {
     setInput("");
   };
 
+  // Call GPT API
   const callGptApi = async (updatedMessages: Message[]) => {
     setIsLoading(true);
     try {
@@ -74,6 +78,7 @@ export default function GPT() {
     }
   };
 
+  // Clear the chat messages
   const handleClear = () => {
     setMessages([]);
     localStorage.removeItem("gptMessages");
@@ -82,6 +87,8 @@ export default function GPT() {
   return (
     <section className="flex h-full w-full flex-col justify-between bg-neutral-800">
       <div className="flex h-full flex-col overflow-y-auto bg-neutral-800 bg-[url('/gptLogo.png')] bg-[length:100px_100px] bg-center bg-no-repeat p-4">
+       
+       
         {messages.map((message, index) => (
           <div
             key={index}
@@ -95,8 +102,10 @@ export default function GPT() {
             <p className="leading-8">{message.content}</p>
           </div>
         ))}
+
+ 
         {isLoading && (
-          <div className="mb-2 w-72 self-start rounded-3xl bg-neutral-700 px-8 py-4">
+          <div className="mb-2 w-72 self-start rounded-3xl bg-neutral-700   px-8 py-4">
             <p className="typing leading-8"></p>
           </div>
         )}
