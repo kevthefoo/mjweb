@@ -111,7 +111,7 @@ export default function GPT() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-grow rounded-md border border-gray-300 bg-neutral-700 p-2"
-            placeholder="Ask something..."
+            placeholder="Ask me something..."
           />
           <button
             type="submit"
