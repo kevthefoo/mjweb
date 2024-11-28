@@ -115,7 +115,7 @@ export default function Explore() {
               alt={`Image ${index + 1}`}
               height={1000}
               width={1000}
-              priority={index < 35}
+              priority={true}
               className={
                 isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
               }
@@ -142,6 +142,14 @@ export default function Explore() {
                 src={selectedImage.url}
                 alt={selectedImage.metadata.job_id}
                 fill={true}
+                priority={true}
+                className="object-contain"
+              />
+              <Image
+                src={selectedImage.url.replace(".webp", ".jpg")}
+                alt={selectedImage.metadata.job_id}
+                fill={true}
+                priority={true}
                 className="object-contain"
               />
             </div>
@@ -150,7 +158,7 @@ export default function Explore() {
               <p className="mb-4">{selectedImage.metadata.prompt}</p>
 
               <div className="mb-4 flex flex-wrap gap-4">
-                {selectedImage.metadata.tags.split(",").map((tag, index) => (
+                {selectedImage.metadata.tags.split(",").filter(tag => tag.trim() !== "").map((tag, index) => (
                   <div
                     key={index}
                     className="rounded-lg border-2 border-white p-1"

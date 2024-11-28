@@ -10,9 +10,13 @@ export async function GET() {
     const client = new S3Client({ region: "us-east-1" });
     console.log("Fetching images from S3");
 
+    const today = new Date();
+    const formattedDate = today.toISOString().split("T")[0];
+
     const input = {
       Bucket: "mjgallery",
-      MaxKeys: 100,
+      MaxKeys: 10,
+      prefix: formattedDate,
     };
 
     const command = new ListObjectsV2Command(input);
@@ -20,6 +24,10 @@ export async function GET() {
 
     const images = await Promise.all(
       response.Contents?.map(async (item) => {
+        if (!item.Key || item.Key.endsWith(".jpg")) {
+          return null; // Skip .jpg files
+        }
+
         const headParams = {
           Bucket: "mjgallery",
           Key: item.Key,
@@ -32,7 +40,7 @@ export async function GET() {
           metadata: headResponse.Metadata,
         };
       }) || [],
-    );
+    ).then((results) => results.filter((item) => item !== null)); // Filter out null values
 
     return NextResponse.json({ images: images });
   } catch (error) {

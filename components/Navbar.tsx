@@ -13,7 +13,7 @@ import logo from "@/assets/logo.png";
 
 export default function Navbar() {
     return (
-        <header className="flex flex-col justify-between h-screen px-8 pt-16 pb-8 w-1/6 bg-neutral-900	">
+        <header className="flex flex-col justify-between h-screen px-8 pt-16 pb-8 w-1/6 bg-neutral-900 z-10">
             <Link href="/explore" className=" ">
                 <div className="flex gap-2">
                     <Image
