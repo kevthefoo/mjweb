@@ -6,10 +6,10 @@ import { SignInButton, useUser } from "@clerk/nextjs";
 export default function SignInButtonComponent() {
     const { user } = useUser();
     if (user) {
-        redirect("/home");
+        redirect("/explore");
     }
     return (
-        <SignInButton mode="modal" forceRedirectUrl="/home">
+        <SignInButton mode="modal" forceRedirectUrl="/explore">
             <button
                 autoFocus
                 onKeyDown={(e) => {

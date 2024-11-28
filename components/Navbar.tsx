@@ -14,7 +14,7 @@ import logo from "@/assets/logo.png";
 export default function Navbar() {
     return (
         <header className="flex flex-col justify-between h-screen px-8 pt-16 pb-8 w-1/6 bg-neutral-900	">
-            <Link href="/home" className=" ">
+            <Link href="/explore" className=" ">
                 <div className="flex gap-2">
                     <Image
                         alt="Meet Johnny Logo"
@@ -27,7 +27,7 @@ export default function Navbar() {
                 </div>
             </Link>
             <nav className="">
-                <ul className="flex flex-col   gap-4">
+                <ul className="flex flex-col gap-4">
                     <li className="  rounded-3xl py-2 px-4 hover:bg-neutral-700">
                         <Link
                             href="/explore"
