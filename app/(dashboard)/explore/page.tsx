@@ -171,7 +171,7 @@ export default function Explore() {
                 onClick={() =>
                   handleCopyToClipboard(
                     selectedImage.metadata.prompt,
-                    selectedImage.metadata.tags,
+                    selectedImage.metadata.tags.replaceAll(',', ' '),
                   )
                 }
                 className="rounded-lg border-2 border-white bg-blue-500 p-1 hover:bg-blue-700"
