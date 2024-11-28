@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     const userPrompt = data.message;
-    console.log(userPrompt);    
+
     try {
         const openai = new OpenAI();
         const completion = await openai.chat.completions.create({
