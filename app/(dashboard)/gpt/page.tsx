@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   role: string;
@@ -92,14 +93,14 @@ export default function GPT() {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`mb-2 max-w-[45%] rounded-3xl px-8 py-4 ${
+            className={`mb-2 max-w-[70%] rounded-3xl px-8 py-4 ${
               message.role === "user"
                 ? "self-end bg-neutral-700"
                 : "self-start bg-neutral-700"
             }`}
           >
             <strong>{message.role === "assistant" ? "GPT" : ""}</strong>
-            <p className="leading-8">{message.content}</p>
+            <ReactMarkdown>{message.content}</ReactMarkdown>
           </div>
         ))}
 
