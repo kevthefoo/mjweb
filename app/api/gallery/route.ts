@@ -10,18 +10,14 @@ export async function GET() {
     const client = new S3Client({ region: "us-east-1" });
     console.log("Fetching images from S3");
 
-    const today = new Date();
-    const formattedDate = today.toISOString().split("T")[0];
-
     const input = {
       Bucket: "mjgallery",
-      MaxKeys: 2000,
-      prefix: formattedDate,
+      MaxKeys: 200,
     };
 
     const command = new ListObjectsV2Command(input);
     const response = await client.send(command);
-
+    
     const images = await Promise.all(
       response.Contents?.map(async (item) => {
         if (!item.Key || item.Key.endsWith(".jpg")) {
