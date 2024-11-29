@@ -15,7 +15,7 @@ export async function GET() {
 
     const input = {
       Bucket: "mjgallery",
-      MaxKeys: 100,
+      MaxKeys: 2000,
       prefix: formattedDate,
     };
 
