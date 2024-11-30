@@ -3,15 +3,14 @@ import { NextResponse } from "next/server";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 
-export async function GET(userId: string) {
+export async function GET(userEmailAddress: string) {
+  console.log(userEmailAddress)
   try {
     // Fetch the customer ID associated with the user
     const customer = await stripe.customers.list({
-      email: "dadasd@gmail.com", // Assuming userId is the user's email
+      email: userEmailAddress, // Assuming userId is the user's email
       limit: 1,
     })
-
-    // console.log(customer)
 
     if (customer.data.length === 0) {
       return NextResponse.json(
@@ -31,7 +30,7 @@ export async function GET(userId: string) {
         { error: "An unknown error occurred" },
         { status: 520 },) // No active subscription found
     }
-    console.log(subscriptions)
+    
     const subscription = subscriptions.data[0]
     const plan = subscription.plan as Stripe.Plan & { product: Stripe.Product }
 

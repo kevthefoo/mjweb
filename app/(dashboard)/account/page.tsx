@@ -19,16 +19,19 @@ type Email = string
 export default function Account() {
   const [userSubData, setData] = useState<Data | null>(null)
 
-  const { user } = useUser();
-  if (!user) {
-    redirect("/");
-  }
-  const userEmailAddress = user.primaryEmailAddress?.emailAddress;
+  const { user, isLoaded } = useUser();
+  const [loading, setLoading] = useState(true);
+
+
+
+
 
   // Get the user's subscription data
+  
+
   const getSubData = async (userEmailAddress: Email) => {
     try {
-      const response = await fetch('/api/stripe', {
+      const response = await fetch(`/api/stripe/${encodeURIComponent(userEmailAddress)}`, {
         method: 'get',
         headers: {
           'Content-Type': 'application/json',
@@ -45,12 +48,20 @@ export default function Account() {
   }
 
   useEffect(() => {
-    if (userEmailAddress) {
-      getSubData(userEmailAddress);
-    } else {
-      console.error('User email address is undefined');
+    if (isLoaded) {
+      if (!user || !user.primaryEmailAddress) {
+        redirect('/');
+      } else {
+        setLoading(false);
+        getSubData(user.primaryEmailAddress.emailAddress)
+      }
     }
-  }, [userEmailAddress]);
+  }, [user, isLoaded]);
+
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="flex h-full w-full flex-col bg-neutral-800 px-20 pb-12 pt-16 text-center">
