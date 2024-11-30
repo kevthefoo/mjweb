@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function GET(userEmailAddress: string) {
-    console.log(userEmailAddress);
     try {
         // Fetch the customer ID associated with the user
         const customer = await stripe.customers.list({
