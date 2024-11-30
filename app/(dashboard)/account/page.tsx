@@ -1,4 +1,57 @@
-export default async function Account() {
+"use client"
+import { redirect } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+import { useState, useEffect } from "react";
+import planData from "@/data/planData.json"
+
+type PlanName = "Pro Plan" | "Standard Plan" | "Basic Plan";
+
+type Data = {
+  planName: PlanName,
+  price: number,
+  currency: string,
+  interval: string,
+  renewalDate: string
+}
+
+type Email = string
+
+export default function Account() {
+  const [userSubData, setData] = useState<Data | null>(null)
+
+  const { user } = useUser();
+  if (!user) {
+    redirect("/");
+  }
+  const userEmailAddress = user.primaryEmailAddress?.emailAddress;
+
+  // Get the user's subscription data
+  const getSubData = async (userEmailAddress: Email) => {
+    try {
+      const response = await fetch('/api/stripe', {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Email': userEmailAddress,
+        },
+
+      })
+      const data = await response.json()
+      setData(data)
+    } catch (error) {
+      console.error('Error subscribing:', error)
+    }
+
+  }
+
+  useEffect(() => {
+    if (userEmailAddress) {
+      getSubData(userEmailAddress);
+    } else {
+      console.error('User email address is undefined');
+    }
+  }, [userEmailAddress]);
+
   return (
     <section className="flex h-full w-full flex-col bg-neutral-800 px-20 pb-12 pt-16 text-center">
       <h1 className="text-3xl">Manage Subscription</h1>
@@ -20,36 +73,29 @@ export default async function Account() {
 
         <div className="flex gap-20">
           <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start">
-            <h1 className="mb-4 text-2xl">Standard Plan Features</h1>
+            <h1 className="mb-4 text-2xl">{userSubData?.planName}</h1>
             <ul className="flex flex-col gap-4">
-              <li>
-                <p>15h Fast generations</p>
-              </li>
-              <li>
-                <p>General commercial terms</p>
-              </li>
-              <li>
-                <p>Optional credit top ups</p>
-              </li>
-              <li>
-                <p>3 concurrent fast jobs</p>
-              </li>
-              <li>
-                <p>Unlimited Relaxed generations</p>
-              </li>
+              {userSubData?.planName && planData[userSubData.planName]?.features.map((item, keys) => {
+                return (
+                  <li key={keys}>
+                    <p>{item}</p>
+                  </li>
+                );
+              })}
+
             </ul>
           </div>
           <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start">
             <h1 className="mb-4 text-2xl">Billing & Payment</h1>
             <ul className="flex flex-col gap-4">
               <li>
-                <p>Price</p>
+                <p>{userSubData?.price}</p>
               </li>
               <li>
-                <p>Billing period</p>
+                <p>{userSubData?.interval}</p>
               </li>
               <li>
-                <p>Renewal date</p>
+                <p>Renewal date {userSubData?.renewalDate}</p>
               </li>
             </ul>
           </div>

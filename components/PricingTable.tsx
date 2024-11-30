@@ -32,7 +32,7 @@ export default function StripePricingTable({ pricingTableId, publishableKey }: S
         src="https://js.stripe.com/v3/pricing-table.js"
         strategy="lazyOnload"
       />
-      <div ref={pricingTableRef} className="w-full max-w-4xl mx-auto my-8" />
+      <div ref={pricingTableRef} className="" />
     </>
   )
 }

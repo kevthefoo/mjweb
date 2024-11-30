@@ -1,0 +1,26 @@
+{
+    "Pro Plan": {
+        "planName": "Pro Plan",
+        "price": 10,
+        "features": [
+            "Feature 1",
+            "Feature 2",
+            "Feature 3"
+        ]
+    },
+    "Standard Plan": {
+        "planName": "Standard Plan",
+        "price": 5,
+        "features": [
+            "Feature 1",
+            "Feature 2"
+        ]
+    },
+    "Basic Plan": {
+        "planName": "Basic Plan",
+        "price": 2,
+        "features": [
+            "Feature 1"
+        ]
+    }
+}
