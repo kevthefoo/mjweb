@@ -12,7 +12,7 @@ export async function GET() {
 
     const input = {
       Bucket: "mjgallery",
-      MaxKeys: 200,
+      MaxKeys: 300,
     };
 
     const command = new ListObjectsV2Command(input);

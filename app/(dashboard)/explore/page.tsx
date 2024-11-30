@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { toast } from 'sonner'
 
 type ImageType = {
   url: string;
@@ -76,10 +77,10 @@ export default function Explore() {
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
-        alert("Prompt copied to clipboard");
+        toast.success("Prompt copied to clipboard")
       })
       .catch(() => {
-        console.error("Failed to copy the prompt");
+        toast.error("Prompt copied to clipboard")
       });
   };
 
@@ -174,7 +175,7 @@ export default function Explore() {
                     selectedImage.metadata.tags.replaceAll(',', ' '),
                   )
                 }
-                className="rounded-lg border-2 border-white bg-blue-500 p-1 hover:bg-blue-700"
+                className="rounded-lg border-2 border-white bg-blue-500  text-white hover:bg-blue-600 p-1"
               >
                 Copy This Prompt
               </button>

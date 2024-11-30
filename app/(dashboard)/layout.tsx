@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: "Meet Johnny",
@@ -22,6 +23,7 @@ export default function DashboardLayout({
     >
       <html lang="en">
         <body className="flex h-screen w-screen antialiased">
+          <Toaster richColors/>
           <Navbar />
           <main className="h-full w-full">{children}</main>
         </body>
