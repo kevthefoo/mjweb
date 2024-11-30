@@ -4,24 +4,26 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
 export const metadata: Metadata = {
-  title: "Meet Johnny",
-  description: "Generate high quality images with Meet Johnny",
+    title: "Meet Johnny",
+    description: "Generate high quality images with Meet Johnny",
 };
 
 export default function LandingPageLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: dark,
-      }}
-    >
-      <html lang="en">
-        <body className="h-screen w-screen antialiased">{children}</body>
-      </html>
-    </ClerkProvider>
-  );
+    return (
+        <ClerkProvider
+            appearance={{
+                baseTheme: dark,
+            }}
+        >
+            <html lang="en">
+                <body className="h-screen w-screen antialiased">
+                    {children}
+                </body>
+            </html>
+        </ClerkProvider>
+    );
 }

@@ -14,7 +14,7 @@ export default {
             },
             backgroundImage: {
                 landingBackground: "url('/inter.svg')",
-            }
+            },
         },
     },
     plugins: [],

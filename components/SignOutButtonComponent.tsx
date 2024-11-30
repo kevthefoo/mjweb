@@ -13,7 +13,10 @@ export default function SignOutButtonComponent() {
 
     return (
         <SignOutButton redirectUrl="/">
-            <button className="flex items-center border-2 border-white rounded-2xl py-2 px-4 hover:bg-neutral-700" onClick={()=>console.log('sign out')}>
+            <button
+                className="flex items-center border-2 border-white rounded-2xl py-2 px-4 hover:bg-neutral-700"
+                onClick={() => console.log("sign out")}
+            >
                 <FaSignOutAlt className="mr-2" />
                 <p>Sign Out</p>
             </button>
