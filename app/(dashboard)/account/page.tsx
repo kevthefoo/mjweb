@@ -2,9 +2,12 @@
 import { redirect } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
-import planData from "@/data/planData.json";
 
 type PlanName = "Pro Plan" | "Standard Plan" | "Basic Plan";
+
+type Feature = {
+    name: string;
+};
 
 type Data = {
     planName: PlanName;
@@ -12,7 +15,7 @@ type Data = {
     currency: string;
     interval: string;
     renewalDate: string;
-    features: string[];
+    features: Feature[];
 };
 
 export default function Account() {
@@ -34,7 +37,7 @@ export default function Account() {
                 },
             });
             const data = await response.json();
-            console.log(data)
+            console.log(data);
             setData(data);
         } catch (error) {
             console.error("Error subscribing:", error);
@@ -81,15 +84,13 @@ export default function Account() {
                             {userSubData?.planName}
                         </h1>
                         <ul className="flex flex-col gap-4">
-                            {userSubData?.features.map(
-                                    (item, keys) => {
-                                        return (
-                                            <li key={keys}>
-                                                <p>{item.name}</p>
-                                            </li>
-                                        );
-                                    }
-                                )}
+                            {userSubData?.features.map((item, keys) => {
+                                return (
+                                    <li key={keys}>
+                                        <p>{item.name}</p>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                     <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start">

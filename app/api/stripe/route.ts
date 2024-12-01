@@ -13,20 +13,15 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        // Fetch the customer ID associated with the user
-        const customer = await stripe.customers.retrieve(stripeCustomerId);
-
         const subscription = await stripe.subscriptions.list({
             customer: stripeCustomerId,
             limit: 1,
         });
 
-        const subscriptionId = subscription.data[0].id;
-
         const plan = subscription.data[0].plan;
         const productID = plan.product as string;
         const product = await stripe.products.retrieve(productID);
-         
+
         return NextResponse.json({
             planName: product.name || "Unknown Plan",
             price: plan.amount ? plan.amount / 100 : 0, // Convert cents to dollars
@@ -35,7 +30,7 @@ export async function GET(request: NextRequest) {
             renewalDate: new Date(
                 subscription.current_period_end * 1000
             ).toLocaleDateString(),
-            features: product.marketing_features
+            features: product.marketing_features,
         });
     } catch (error) {
         console.error("Error fetching subscription:", error);
