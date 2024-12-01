@@ -42,7 +42,7 @@ async function getSubscriptionDetails(subscriptionId: string) {
         );
         const productID = subscription.plan.product as string;
         const product = await stripe.products.retrieve(productID);
-        
+
         const plan = subscription.items.data[0].plan;
         return {
             planName: product.name || "Unknown Plan",
@@ -78,10 +78,10 @@ export async function POST(req: Request) {
     // Do something with the event
     if (event.type === "checkout.session.completed") {
         const subscription = event.data.object;
+        const subscriptionId = subscription.subscription as string;
         const stripeCustomerId = subscription.customer;
         const clerkUserId = subscription.client_reference_id;
-        const subscriptionId = subscription.subscription as string;
-
+        
         if (clerkUserId && stripeCustomerId) {
             try {
                 const user = await clerkClient.users.getUser(clerkUserId);
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
                 console.log(
                     `Updated Clerk user ${clerkUserId} with Stripe customer ID ${stripeCustomerId}`
                 );
-                const discordMessage = `New subscription!\nUser: ${user.username}\nPlan: ${subscriptionDetails.planName}\nAmount: ${subscriptionDetails.planAmount}\nBilling Cycle: ${subscriptionDetails.intervalCount} ${subscriptionDetails.interval}`;
+                const discordMessage = `**New Subscription!**\n**User: **${user.username}\n**Plan: **${subscriptionDetails.planName}\n**Amount: **${subscriptionDetails.planAmount}\n**Billing Cycle: **${subscriptionDetails.intervalCount} ${subscriptionDetails.interval}\n--------------------`;
 
                 sendDiscordMessage(discordMessage);
             } catch (error) {
