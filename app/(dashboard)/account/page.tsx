@@ -22,8 +22,9 @@ export default function Account() {
     const { user, isLoaded } = useUser();
     const [loading, setLoading] = useState(true);
 
-    // Get the user's subscription data
+    const discordUserName = user?.username;
 
+    // Get the user's subscription data
     const getSubData = async (userEmailAddress: Email) => {
         try {
             const response = await fetch(

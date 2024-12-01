@@ -6,11 +6,13 @@ import Script from "next/script";
 interface StripePricingTableProps {
     pricingTableId: string;
     publishableKey: string;
+    clerkUserID: string;
 }
 
 export default function StripePricingTable({
     pricingTableId,
     publishableKey,
+    clerkUserID,
 }: StripePricingTableProps) {
     const pricingTableRef = useRef<HTMLDivElement>(null);
 
@@ -21,6 +23,7 @@ export default function StripePricingTable({
             );
             stripePricingTable.setAttribute("pricing-table-id", pricingTableId);
             stripePricingTable.setAttribute("publishable-key", publishableKey);
+            stripePricingTable.setAttribute("client-reference-id", clerkUserID);
             pricingTableRef.current.appendChild(stripePricingTable);
         }
 
@@ -29,7 +32,7 @@ export default function StripePricingTable({
                 pricingTableRef.current.innerHTML = "";
             }
         };
-    }, [pricingTableId, publishableKey]);
+    }, [pricingTableId, publishableKey, clerkUserID]);
 
     return (
         <>
