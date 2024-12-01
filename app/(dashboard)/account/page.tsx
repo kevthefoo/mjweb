@@ -12,9 +12,8 @@ type Data = {
     currency: string;
     interval: string;
     renewalDate: string;
+    features: string[];
 };
-
-type Email = string;
 
 export default function Account() {
     const [userSubData, setData] = useState<Data | null>(null);
@@ -22,22 +21,20 @@ export default function Account() {
     const { user, isLoaded } = useUser();
     const [loading, setLoading] = useState(true);
 
-    const discordUserName = user?.username;
+    const stripeCustomerId = user?.publicMetadata?.stripeCustomerId as string;
 
     // Get the user's subscription data
-    const getSubData = async (userEmailAddress: Email) => {
+    const getSubData = async (stripeCustomerId: string) => {
         try {
-            const response = await fetch(
-                `/api/stripe/${encodeURIComponent(userEmailAddress)}`,
-                {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "User-Email": userEmailAddress,
-                    },
-                }
-            );
+            const response = await fetch("/api/stripe/", {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    stripeCustomerId: stripeCustomerId,
+                },
+            });
             const data = await response.json();
+            console.log(data)
             setData(data);
         } catch (error) {
             console.error("Error subscribing:", error);
@@ -50,7 +47,7 @@ export default function Account() {
                 redirect("/");
             } else {
                 setLoading(false);
-                getSubData(user.primaryEmailAddress.emailAddress);
+                getSubData(stripeCustomerId);
             }
         }
     }, [user, isLoaded]);
@@ -84,12 +81,11 @@ export default function Account() {
                             {userSubData?.planName}
                         </h1>
                         <ul className="flex flex-col gap-4">
-                            {userSubData?.planName &&
-                                planData[userSubData.planName]?.features.map(
+                            {userSubData?.features.map(
                                     (item, keys) => {
                                         return (
                                             <li key={keys}>
-                                                <p>{item}</p>
+                                                <p>{item.name}</p>
                                             </li>
                                         );
                                     }
