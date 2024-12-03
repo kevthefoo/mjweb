@@ -1,12 +1,13 @@
 import Link from "next/link";
 import SignOutButtonComponent from "./SignOutButtonComponent";
 import {
+  // FaRobot,
   FaRegCompass,
   FaPalette,
-  FaRobot,
   FaAddressCard,
   FaBookmark,
   FaTools,
+  FaFeatherAlt,
 } from "react-icons/fa";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
@@ -41,15 +42,15 @@ export default function Navbar() {
               <p className="ml-2 text-xl font-medium">Creation</p>
             </Link>
           </li>
-          <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
+          {/* <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/gpt" className="flex items-center justify-start">
               <FaRobot />
               <p className="ml-2 text-xl font-medium">GPT</p>
             </Link>
-          </li>
+          </li> */}
           <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/vision" className="flex items-center justify-start">
-              <FaRobot />
+              <FaFeatherAlt />
               <p className="ml-2 text-xl font-medium">Vision</p>
             </Link>
           </li>
