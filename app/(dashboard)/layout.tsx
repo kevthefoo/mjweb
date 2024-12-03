@@ -6,28 +6,28 @@ import { dark } from "@clerk/themes";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-    title: "Meet Johnny",
-    description: "Generate high quality images with Meet Johnny",
+  title: "Meet Johnny",
+  description: "Generate high quality images with Meet Johnny",
 };
 
 export default function DashboardLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <ClerkProvider
-            appearance={{
-                baseTheme: dark,
-            }}
-        >
-            <html lang="en">
-                <body className="flex h-screen w-screen antialiased">
-                    <Toaster richColors />
-                    <Navbar />
-                    <main className="h-full w-full">{children}</main>
-                </body>
-            </html>
-        </ClerkProvider>
-    );
+  return (
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang="en">
+        <body className="flex h-screen w-screen antialiased">
+          <Toaster richColors />
+          <Navbar />
+          <main className="h-full w-full">{children}</main>
+        </body>
+      </html>
+    </ClerkProvider>
+  );
 }
