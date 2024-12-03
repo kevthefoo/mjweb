@@ -3,6 +3,7 @@
 import SubmitButton from "@/components/SubmitButton";
 import { useState } from "react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const handleCopyToClipboard = (prompt: string) => {
   navigator.clipboard
@@ -83,9 +84,10 @@ export default function Vision() {
           <div className="text-[150px]">+</div>
           <p>Upload Your Image</p>
           {imagePreview && (
-            <img
+            <Image
               src={decodeURIComponent(imagePreview)}
               alt="Preview"
+              fill={true}
               className="absolute h-full w-full object-contain"
             />
           )}
