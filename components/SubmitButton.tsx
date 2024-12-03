@@ -6,7 +6,7 @@ export default function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:opacity-50"
+      className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:opacity-50 disabled:hover:bg-blue-500"
     >
       {pending ? "Generating description..." : "Generate Description"}
     </button>
