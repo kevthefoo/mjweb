@@ -98,7 +98,7 @@ export default function Vision() {
         <div className="w-full overflow-y-scroll">
           {description && (
             <p
-              className="cursor-pointer px-4 py-2"
+              className="cursor-pointer px-4 py-2 text-slate-300 hover:text-slate-50"
               onClick={() => handleCopyToClipboard(description)}
             >
               {description}
