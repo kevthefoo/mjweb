@@ -4,7 +4,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function GET(request: NextRequest) {
   const stripeCustomerId = request.headers.get("stripecustomerid");
-  console.log("Stripe Customer ID:", stripeCustomerId);
+  console.log(`Stripe Customer ID: ${stripeCustomerId}\n`);
   if (!stripeCustomerId) {
     return NextResponse.json(
       { error: "Stripe Customer ID is required" },
