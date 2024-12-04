@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 
+import { FaCheck } from "react-icons/fa";
+
 type PlanName = "Pro Plan" | "Standard Plan" | "Basic Plan" | "Free Plan";
 
 type Feature = {
@@ -14,7 +16,8 @@ type Data = {
   price: number;
   currency: string;
   interval: string;
-  renewalDate: string;
+  startDay: string;
+  endDay: string;
   features: Feature[];
 };
 
@@ -80,7 +83,7 @@ export default function Account() {
         </div>
 
         <div className="flex items-start justify-center gap-20 max-lg_tablet:flex-col">
-          <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full self-stretch">
+          <div className="w-1/2 self-stretch rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full">
             <h1 className="mb-4 text-2xl max-lg_tablet:text-xl max-sm_tablet:text-lg max-lg_mobile:text-base">
               {userSubData?.planName}
             </h1>
@@ -88,13 +91,16 @@ export default function Account() {
               {userSubData?.features.map((item, keys) => {
                 return (
                   <li key={keys}>
-                    <p>{item.name}</p>
+                    <p className="flex items-center justify-start">
+                      <FaCheck className="mr-2" />
+                      {item.name}
+                    </p>
                   </li>
                 );
               })}
             </ul>
           </div>
-          <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full self-stretch">
+          <div className="w-1/2 self-stretch rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full">
             <h1 className="mb-4 text-2xl max-lg_tablet:text-xl max-sm_tablet:text-lg max-lg_mobile:text-base">
               Billing & Payment
             </h1>
@@ -103,10 +109,13 @@ export default function Account() {
                 <p>Price: {userSubData?.price}</p>
               </li>
               <li>
-                <p>Billing period: {userSubData?.interval}</p>
+                <p>Billing Period: {userSubData?.interval}</p>
               </li>
               <li>
-                <p>Renewal date: {userSubData?.renewalDate}</p>
+                <p>Start Date: {userSubData?.startDay}</p>
+              </li>
+              <li>
+                <p>End Date: {userSubData?.endDay}</p>
               </li>
             </ul>
           </div>

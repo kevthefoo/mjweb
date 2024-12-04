@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import SubmitButton from "@/components/SubmitButton";
+
 import { useState } from "react";
 import { toast } from "sonner";
-import Image from "next/image";
 import { CiMedicalCross } from "react-icons/ci";
+import { useUser } from "@clerk/nextjs";
 
 const handleCopyToClipboard = (prompt: string) => {
   navigator.clipboard
@@ -22,6 +24,7 @@ export default function Vision() {
   const [isUploaded, setIsUploaded] = useState(false);
   const [description, setDescription] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { user, isLoaded } = useUser();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,6 +68,11 @@ export default function Vision() {
     }
   };
 
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(user);
   return (
     <section className="flex h-full w-full flex-col justify-between bg-neutral-800">
       <form
