@@ -44,10 +44,16 @@ export default function Vision() {
 
   const handleSubmit = async () => {
     setDescription(null);
-    setError(null);
+
+    if (endDayTimestamp === undefined) {
+      toast.error("You need to subscribe to use this feature");
+
+      return;
+    }
 
     if (currentTimestamp > endDayTimestamp) {
-      setError("Your subscription has expired");
+      toast.error("Your subscription has expired");
+
       return;
     }
 
@@ -65,7 +71,6 @@ export default function Vision() {
       }
 
       const data = await response.json();
-      console.log(data);
 
       const descrivedText = JSON.parse(
         data.result.content.replaceAll("json", "").replaceAll("```", ""),
@@ -73,7 +78,13 @@ export default function Vision() {
 
       setDescription(descrivedText);
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        setError(error.message);
+        console.error(error);
+      } else {
+        setError("An unknown error occurred");
+        console.error("An unknown error occurred", error);
+      }
     }
   };
 
@@ -134,7 +145,7 @@ export default function Vision() {
         )}
       </form>
 
-      <div className="flex h-1/6 bg-neutral-700 max-lg_mobile:hidden">
+      <div className="relative flex h-1/6 bg-neutral-700 max-lg_mobile:hidden">
         <div className="w-full overflow-y-scroll">
           {description && (
             <p
@@ -144,8 +155,8 @@ export default function Vision() {
               {description}
             </p>
           )}
-          <p>{error}</p>
         </div>
+        {error && <p className="text-red-500">{error}</p>}
       </div>
     </section>
   );
