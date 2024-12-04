@@ -66,6 +66,7 @@ export default function Explore() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
+    setIsSlidePrompt(false)
   };
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -163,8 +164,8 @@ export default function Explore() {
             <div
               className={
                 isSlidePrompt
-                  ? "w-1/3 p-4 transition-all duration-400 ease-linear max-lg_mobile:absolute max-lg_mobile:top-[calc(100%)]  max-lg_mobile:translate-y-[-100%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
-                  : "w-1/3 p-4 transition-all duration-400 ease-linear max-lg_mobile:absolute max-lg_mobile:top-[92.5%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
+                  ? "duration-400 w-1/3 p-4 transition-all ease-linear max-lg_mobile:absolute max-lg_mobile:top-[calc(100%)] max-lg_mobile:w-full max-lg_mobile:translate-y-[-100%] max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
+                  : "duration-400 w-1/3 p-4 transition-all ease-linear max-lg_mobile:absolute max-lg_mobile:top-[92.5%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
               }
               onClick={handleOverlayClick}
             >
@@ -180,7 +181,17 @@ export default function Explore() {
               </div>
 
               <h1 className="mb-4">Prompt</h1>
-              <p className="mb-4">{selectedImage.metadata.prompt}</p>
+              <p
+                className="mb-4 cursor-pointer text-slate-300 hover:text-slate-50"
+                onClick={() =>
+                  handleCopyToClipboard(
+                    selectedImage.metadata.prompt,
+                    selectedImage.metadata.tags.replaceAll(",", " "),
+                  )
+                }
+              >
+                {selectedImage.metadata.prompt}
+              </p>
 
               <div className="mb-4 flex flex-wrap gap-4">
                 {selectedImage.metadata.tags
@@ -195,17 +206,6 @@ export default function Explore() {
                     </div>
                   ))}
               </div>
-              <button
-                onClick={() =>
-                  handleCopyToClipboard(
-                    selectedImage.metadata.prompt,
-                    selectedImage.metadata.tags.replaceAll(",", " "),
-                  )
-                }
-                className="rounded-lg border-2 border-white bg-blue-500 p-1 text-white hover:bg-blue-600"
-              >
-                Copy This Prompt
-              </button>
             </div>
           </div>
         )}
