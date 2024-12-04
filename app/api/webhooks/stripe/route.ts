@@ -96,7 +96,7 @@ export async function POST(req: Request) {
         if (!subscriptionDetails) {
           throw new Error("Failed to fetch subscription details");
         }
-        
+
         // Update the user's Clerk public metadata with the subscription details
         await clerkClient.users.updateUser(clerkUserId, {
           publicMetadata: {

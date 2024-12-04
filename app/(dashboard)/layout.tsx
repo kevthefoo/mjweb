@@ -1,7 +1,7 @@
-import Navbar from "@/components/Navbar";
-import MobileNavbar from "@/components/MobileNavbar";
 import type { Metadata } from "next";
 import "@/app/globals.css";
+import Navbar from "@/components/Navbar";
+import MobileNavbar from "@/components/MobileNavbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import ResToaster from "@/components/ResToaster";

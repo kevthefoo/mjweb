@@ -25,6 +25,9 @@ export default function Vision() {
   const [description, setDescription] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { user, isLoaded } = useUser();
+  const userPublicMetadata = user?.publicMetadata;
+
+  console.log(userPublicMetadata);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,7 +75,6 @@ export default function Vision() {
     return <div>Loading...</div>;
   }
 
-  console.log(user);
   return (
     <section className="flex h-full w-full flex-col justify-between bg-neutral-800">
       <form
