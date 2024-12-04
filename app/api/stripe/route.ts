@@ -5,7 +5,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 export async function GET(request: NextRequest) {
   // Get the Stripe Customer ID from the request headers
   const stripeCustomerId = request.headers.get("stripecustomerid");
-  console.log(`Stripe Customer ID: ${stripeCustomerId}\n`);
+  console.log(`\nStripe Customer ID: ${stripeCustomerId}\n`);
 
   // Check if the Stripe Customer ID is missing
   if (!stripeCustomerId) {
