@@ -142,7 +142,7 @@ export default function Explore() {
               X
             </div>
             <div
-              className="relative h-full w-2/3 border-2 border-white p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
+              className="relative h-full w-2/3 p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
               <Image
@@ -163,8 +163,8 @@ export default function Explore() {
             <div
               className={
                 isSlidePrompt
-                  ? "w-1/3 p-4 transition-all duration-500 ease-linear max-lg_mobile:absolute max-lg_mobile:bottom-[0px] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
-                  : "w-1/3 p-4 transition-all duration-500 ease-linear max-lg_mobile:absolute max-lg_mobile:top-[92.5%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
+                  ? "w-1/3 p-4 transition-all duration-400 ease-linear max-lg_mobile:absolute max-lg_mobile:top-[calc(100%)]  max-lg_mobile:translate-y-[-100%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
+                  : "w-1/3 p-4 transition-all duration-400 ease-linear max-lg_mobile:absolute max-lg_mobile:top-[92.5%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
               }
               onClick={handleOverlayClick}
             >
