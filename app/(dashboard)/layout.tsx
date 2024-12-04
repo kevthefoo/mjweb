@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import MobileNavbar from "@/components/MobileNavbar";
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -22,9 +23,10 @@ export default function DashboardLayout({
       }}
     >
       <html lang="en">
-        <body className="flex h-screen w-screen antialiased">
+        <body className="relative flex h-screen w-screen antialiased">
           <Toaster richColors />
           <Navbar />
+          <MobileNavbar />
           <main className="h-full w-full">{children}</main>
         </body>
       </html>

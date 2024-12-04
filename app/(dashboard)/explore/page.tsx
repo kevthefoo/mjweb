@@ -104,7 +104,7 @@ export default function Explore() {
           : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
-      <div className="relative columns-5 gap-0">
+      <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
         {images.map((image, index) => (
           <div
             key={index}

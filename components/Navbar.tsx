@@ -14,9 +14,9 @@ import logo from "@/assets/logo.png";
 
 export default function Navbar() {
   return (
-    <header className="z-10 flex h-screen w-1/6 flex-col justify-between bg-neutral-900 px-8 pb-8 pt-16">
+    <header className="max-rg_tablet:w-[200px] max-rg_desktop:px-4 max-lg_mobile:hidden z-10 flex h-screen w-[300px] flex-col justify-between bg-neutral-900 px-8 pb-8 pt-16">
       <Link href="/explore" className=" ">
-        <div className="flex gap-2">
+        <div className="max-rg_desktop:flex-col flex items-center justify-center gap-2">
           <Image
             alt="Meet Johnny Logo"
             width={30}
@@ -24,7 +24,9 @@ export default function Navbar() {
             src={logo}
             className="rounded-full"
           />
-          <h1 className="text-2xl">Meet Johnny</h1>
+          <h1 className="max-rg_desktop:text-lg text-center text-2xl">
+            Meet Johnny
+          </h1>
         </div>
       </Link>
       <nav className="">
@@ -32,14 +34,18 @@ export default function Navbar() {
           <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/explore" className="flex items-center justify-start">
               <FaRegCompass />
-              <p className="ml-2 text-xl font-medium">Explore</p>
+              <p className="max-rg_desktop:text-sm ml-2 text-xl font-medium">
+                Explore
+              </p>
             </Link>
           </li>
 
           <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/creation" className="flex items-center justify-start">
               <FaPalette />
-              <p className="ml-2 text-xl font-medium">Creation</p>
+              <p className="max-rg_desktop:text-sm ml-2 text-xl font-medium">
+                Creation
+              </p>
             </Link>
           </li>
           {/* <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
@@ -51,13 +57,17 @@ export default function Navbar() {
           <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/vision" className="flex items-center justify-start">
               <FaFeatherAlt />
-              <p className="ml-2 text-xl font-medium">Vision</p>
+              <p className="max-rg_desktop:text-sm ml-2 text-xl font-medium">
+                Vision
+              </p>
             </Link>
           </li>
           <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/plans" className="flex items-center justify-start">
               <FaBookmark />
-              <p className="ml-2 text-xl font-medium">Plans</p>
+              <p className="max-rg_desktop:text-sm ml-2 text-xl font-medium">
+                Plans
+              </p>
             </Link>
           </li>
 
@@ -68,13 +78,17 @@ export default function Navbar() {
               className="flex items-center justify-start"
             >
               <FaTools />
-              <p className="ml-2 text-xl font-medium">Support</p>
+              <p className="max-rg_desktop:text-sm ml-2 text-xl font-medium">
+                Support
+              </p>
             </Link>
           </li>
           <li className="rounded-3xl px-4 py-2 hover:bg-neutral-700">
             <Link href="/account" className="flex items-center justify-start">
               <FaAddressCard />
-              <p className="ml-2 text-xl font-medium">Account</p>
+              <p className="max-rg_desktop:text-sm ml-2 text-xl font-medium">
+                Account
+              </p>
             </Link>
           </li>
         </ul>

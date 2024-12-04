@@ -4,7 +4,8 @@ import SubmitButton from "@/components/SubmitButton";
 import { useState } from "react";
 import { toast } from "sonner";
 import Image from "next/image";
-
+import { CiMedicalCross } from "react-icons/ci";
+ 
 const handleCopyToClipboard = (prompt: string) => {
   navigator.clipboard
     .writeText(prompt)
@@ -63,12 +64,12 @@ export default function Vision() {
   };
 
   return (
-    <section className="flex h-full w-full flex-col justify-between bg-neutral-800">
+    <section className="max-rg_tablet:pb-12 flex h-full w-full flex-col justify-between bg-neutral-800">
       <form
         action={handleSubmit}
         className="flex h-full flex-col items-center justify-center"
       >
-        <h1 className="mb-4 text-center text-3xl">Image to Text</h1>
+        <h1 className="mb-4 text-center text-3xl max-lg_mobile:text-xl">Image to Text</h1>
         <input
           type="file"
           name="image"
@@ -79,10 +80,17 @@ export default function Vision() {
         />
         <label
           htmlFor="upload_input"
-          className="relative mb-8 flex h-1/2 w-1/2 cursor-pointer flex-col items-center justify-center border-2 border-dashed border-white font-bold"
+          className="max-rg_tablet:h-1/3 relative mb-8 flex h-1/2 w-1/2 cursor-pointer flex-col items-center justify-center border-2 border-dashed border-white font-bold"
         >
-          <div className="text-[150px]">+</div>
-          <p>Upload Your Image</p>
+          <div className="max-rg_tablet:text-[100px] mb-4 text-[150px]">
+            <CiMedicalCross />
+          </div>
+          {imagePreview ? (
+            <p className="mb-4"></p>
+          ) : (
+            <p className="mb-4">Upload Your Image</p>
+          )}
+
           {imagePreview && (
             <Image
               src={decodeURIComponent(imagePreview)}
@@ -94,9 +102,19 @@ export default function Vision() {
         </label>
 
         <SubmitButton />
+        {description ? (
+          <div
+            className="max-lg_mobile:block max-lg_mobile:text-sm hidden cursor-pointer rounded-xl border-2 border-white px-4 py-2 text-slate-300 hover:text-slate-50"
+            onClick={() => handleCopyToClipboard(description)}
+          >
+            Copy Prompt
+          </div>
+        ) : (
+          <div className="max-lg_mobile:block hidden px-4 py-2  h-10"></div>
+        )}
       </form>
 
-      <div className="flex h-1/6 bg-neutral-700">
+      <div className="max-lg_mobile:hidden flex h-1/6 bg-neutral-700">
         <div className="w-full overflow-y-scroll">
           {description && (
             <p
