@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
 type ImageType = {
   url: string;
@@ -18,6 +19,7 @@ export default function Explore() {
   const [images, setImages] = useState<ImageType[]>([]);
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSlidePrompt, setIsSlidePrompt] = useState(false);
 
   const fetchImage = async () => {
     try {
@@ -72,6 +74,10 @@ export default function Explore() {
     }
   };
 
+  const handleSlidePrompt = () => {
+    setIsSlidePrompt(!isSlidePrompt);
+  };
+
   const handleCopyToClipboard = (prompt: string, tags: string) => {
     const textToCopy = `${prompt}\n${tags}`;
     navigator.clipboard
@@ -104,7 +110,7 @@ export default function Explore() {
           : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
-      <div className="max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2 relative columns-5 gap-0">
+      <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
         {images.map((image, index) => (
           <div
             key={index}
@@ -126,7 +132,7 @@ export default function Explore() {
 
         {isModalOpen && selectedImage && (
           <div
-            className="max-lg_mobile:flex-col max-lg_mobile:fixed max-lg_mobile:z-20 max-lg_mobile:py-0 absolute bottom-0 left-0 right-0 top-0 flex h-screen w-full bg-black bg-opacity-90 py-4"
+            className="absolute bottom-0 left-0 right-0 top-0 flex h-screen w-full bg-black bg-opacity-90 py-4 max-lg_mobile:fixed max-lg_mobile:z-20 max-lg_mobile:flex-col max-lg_mobile:py-0"
             onClick={handleOverlayClick}
           >
             <div
@@ -136,7 +142,7 @@ export default function Explore() {
               X
             </div>
             <div
-              className="max-lg_mobile:w-full max-lg_mobile:h-screen max-lg_mobile:p-0 relative h-full w-2/3 border-2 border-white p-4"
+              className="relative h-full w-2/3 border-2 border-white p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
               <Image
@@ -155,9 +161,24 @@ export default function Explore() {
               />
             </div>
             <div
-              className="max-lg_mobile:text-sm max-lg_mobile:bg-opacity-95 max-lg_mobile:w-full max-lg_mobile:bottom-[-100px] max-lg_mobile:absolute max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 w-1/3 p-4"
+              className={
+                isSlidePrompt
+                  ? "w-1/3 p-4 transition-all duration-500 ease-linear max-lg_mobile:absolute max-lg_mobile:bottom-[0px] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
+                  : "w-1/3 p-4 transition-all duration-500 ease-linear max-lg_mobile:absolute max-lg_mobile:top-[92.5%] max-lg_mobile:w-full max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 max-lg_mobile:bg-opacity-95 max-lg_mobile:text-sm"
+              }
               onClick={handleOverlayClick}
             >
+              <div
+                className="absolute left-1/2 top-2 hidden -translate-x-1/2 transform text-xl max-lg_mobile:block"
+                onClick={handleSlidePrompt}
+              >
+                {isSlidePrompt ? (
+                  <FaArrowAltCircleDown />
+                ) : (
+                  <FaArrowAltCircleUp />
+                )}
+              </div>
+
               <h1 className="mb-4">Prompt</h1>
               <p className="mb-4">{selectedImage.metadata.prompt}</p>
 
