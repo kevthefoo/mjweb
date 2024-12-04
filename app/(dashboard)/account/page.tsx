@@ -105,17 +105,21 @@ export default function Account() {
               Billing & Payment
             </h1>
             <ul className="flex flex-col gap-4 max-lg_tablet:text-base max-sm_tablet:text-xs">
-              <li>
-                <p>Price: {userSubData?.price}</p>
+              <li className="flex items-center justify-between">
+                <h1>Price:</h1>
+                <p>${userSubData?.price} / mo</p>
               </li>
-              <li>
-                <p>Billing Period: {userSubData?.interval}</p>
+              <li className="flex items-center justify-between">
+                <h1>Billing Period:</h1>
+                <p>{userSubData?.interval}</p>
               </li>
-              <li>
-                <p>Start Date: {userSubData?.startDay}</p>
+              <li className="flex items-center justify-between">
+                <h1>Start Date:</h1>
+                <p>{userSubData?.startDay}</p>
               </li>
-              <li>
-                <p>End Date: {userSubData?.endDay}</p>
+              <li className="flex items-center justify-between">
+                <h1>End Date:</h1>
+                <p>{userSubData?.endDay}</p>
               </li>
             </ul>
           </div>
