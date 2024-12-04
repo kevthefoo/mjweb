@@ -23,7 +23,6 @@ export default function Vision() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploaded, setIsUploaded] = useState(false);
   const [description, setDescription] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const { user, isLoaded } = useUser();
 
   const userPublicMetadata = user?.publicMetadata;
@@ -47,13 +46,11 @@ export default function Vision() {
 
     if (endDayTimestamp === undefined) {
       toast.error("You need to subscribe to use this feature");
-
       return;
     }
 
-    if (currentTimestamp > endDayTimestamp) {
+    if (currentTimestamp > endDayTimestamp * 1000) {
       toast.error("Your subscription has expired");
-
       return;
     }
 
@@ -67,7 +64,7 @@ export default function Vision() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to call GPT API");
+        throw new Error("Failed to call the API");
       }
 
       const data = await response.json();
@@ -79,10 +76,10 @@ export default function Vision() {
       setDescription(descrivedText);
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+        toast.error(error.message);
         console.error(error);
       } else {
-        setError("An unknown error occurred");
+        toast.error("An unknown error occurred");
         console.error("An unknown error occurred", error);
       }
     }
@@ -156,7 +153,6 @@ export default function Vision() {
             </p>
           )}
         </div>
-        {error && <p className="text-red-500">{error}</p>}
       </div>
     </section>
   );
