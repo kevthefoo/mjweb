@@ -12,6 +12,21 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  if (stripeCustomerId == "undefined") {
+    return NextResponse.json({
+      planName: "Free Plan",
+      price: 0,
+      currency: "USD",
+      interval: "N/A",
+      renewalDate: "N/A",
+      features: [
+        { name: "Feature 1" },
+        { name: "Feature 2" },
+        { name: "Feature 3" },
+      ],
+    });
+  }
+
   try {
     const subscription = await stripe.subscriptions.list({
       customer: stripeCustomerId,
