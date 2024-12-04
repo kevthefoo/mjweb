@@ -29,7 +29,7 @@ export default function Vision() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
-        setIsUploaded(true)
+        setIsUploaded(true);
       };
       reader.readAsDataURL(file);
     }
@@ -66,7 +66,7 @@ export default function Vision() {
   };
 
   return (
-    <section className="flex h-full w-full flex-col justify-between bg-neutral-800 max-rg_tablet:pb-12">
+    <section className="flex h-full w-full flex-col justify-between bg-neutral-800">
       <form
         action={handleSubmit}
         className="flex h-full flex-col items-center justify-center"
