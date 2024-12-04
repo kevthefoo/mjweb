@@ -7,9 +7,7 @@ export default function LandingPage() {
         <h1 className="mb-12">
           Unlock Your Creativity with New Era Generative AI
         </h1>
-        <div className="h-16">
-          <SignInButtonComponent />
-        </div>
+        <SignInButtonComponent />
       </section>
     </main>
   );

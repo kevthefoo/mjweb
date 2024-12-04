@@ -104,7 +104,7 @@ export default function Explore() {
           : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
-      <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
+      <div className="max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2 relative columns-5 gap-0">
         {images.map((image, index) => (
           <div
             key={index}
@@ -126,7 +126,7 @@ export default function Explore() {
 
         {isModalOpen && selectedImage && (
           <div
-            className="absolute bottom-0 left-0 right-0 top-0 flex h-screen w-full bg-black bg-opacity-90 py-4"
+            className="max-lg_mobile:flex-col max-lg_mobile:fixed max-lg_mobile:z-20 max-lg_mobile:py-0 absolute bottom-0 left-0 right-0 top-0 flex h-screen w-full bg-black bg-opacity-90 py-4"
             onClick={handleOverlayClick}
           >
             <div
@@ -136,7 +136,7 @@ export default function Explore() {
               X
             </div>
             <div
-              className="relative h-full w-2/3 p-4"
+              className="max-lg_mobile:w-full max-lg_mobile:h-screen max-lg_mobile:p-0 relative h-full w-2/3 border-2 border-white p-4"
               onClick={handleOverlayClick}
             >
               <Image
@@ -154,7 +154,10 @@ export default function Explore() {
                 className="object-contain"
               />
             </div>
-            <div className="w-1/3 p-4" onClick={handleOverlayClick}>
+            <div
+              className="max-lg_mobile:text-sm max-lg_mobile:bg-opacity-95 max-lg_mobile:w-full max-lg_mobile:bottom-[-100px] max-lg_mobile:absolute max-lg_mobile:rounded-t-3xl max-lg_mobile:bg-neutral-700 w-1/3 p-4"
+              onClick={handleOverlayClick}
+            >
               <h1 className="mb-4">Prompt</h1>
               <p className="mb-4">{selectedImage.metadata.prompt}</p>
 

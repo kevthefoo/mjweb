@@ -4,7 +4,15 @@ import Link from "next/link";
 import { SignInButton, useUser } from "@clerk/nextjs";
 
 export default function SignInButtonComponent() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <div className="flex cursor-not-allowed items-center justify-center rounded-2xl border-2 border-white bg-gray-800 px-4 py-2">
+        Loading...
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -17,7 +25,7 @@ export default function SignInButtonComponent() {
               e.currentTarget.click();
             }
           }}
-          className="landing_page_enter_button mt-8 rounded-2xl border-2 border-white px-4 py-2 hover:bg-indigo-800"
+          className="flex items-center justify-center rounded-2xl border-2 border-white px-4 py-2 hover:bg-indigo-800"
         >
           Enter
         </button>
@@ -27,7 +35,7 @@ export default function SignInButtonComponent() {
     return (
       <Link
         href="/explore"
-        className="landing_page_enter_button mt-8 rounded-2xl border-2 border-white px-4 py-2 hover:bg-indigo-800"
+        className="flex items-center justify-center rounded-2xl border-2 border-white px-4 py-2 hover:bg-indigo-800"
       >
         Enter
       </Link>
