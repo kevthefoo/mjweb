@@ -19,6 +19,7 @@ const handleCopyToClipboard = (prompt: string) => {
 
 export default function Vision() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isUploaded, setIsUploaded] = useState(false);
   const [description, setDescription] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,6 +29,7 @@ export default function Vision() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
+        setIsUploaded(true)
       };
       reader.readAsDataURL(file);
     }
@@ -103,7 +105,7 @@ export default function Vision() {
           )}
         </label>
 
-        <SubmitButton />
+        <SubmitButton isUploaded={isUploaded} />
         {description ? (
           <div
             className="hidden cursor-pointer rounded-xl border-2 border-white px-4 py-2 text-slate-300 hover:text-slate-50 max-lg_mobile:block max-lg_mobile:text-sm"
