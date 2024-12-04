@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 
-type PlanName = "Pro Plan" | "Standard Plan" | "Basic Plan";
+type PlanName = "Pro Plan" | "Standard Plan" | "Basic Plan" | "Free Plan";
 
 type Feature = {
   name: string;
@@ -95,13 +95,13 @@ export default function Account() {
             <h1 className="mb-4 text-2xl">Billing & Payment</h1>
             <ul className="flex flex-col gap-4">
               <li>
-                <p>{userSubData?.price}</p>
+                <p>Price: {userSubData?.price}</p>
               </li>
               <li>
-                <p>{userSubData?.interval}</p>
+                <p>Billing period: {userSubData?.interval}</p>
               </li>
               <li>
-                <p>Renewal date {userSubData?.renewalDate}</p>
+                <p>Renewal date: {userSubData?.renewalDate}</p>
               </li>
             </ul>
           </div>
