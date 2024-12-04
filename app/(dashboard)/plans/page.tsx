@@ -20,7 +20,7 @@ export default function Plans() {
   }, [user, isLoaded]);
 
   return (
-    <section className="h-full w-full overflow-y-scroll bg-neutral-800 px-20 pb-12 pt-16 text-center">
+    <section className="h-full w-full overflow-y-scroll bg-neutral-800 px-20 pb-12 pt-16 text-center max-sm_tablet:px-10">
       <h1 className="text-center text-3xl">Subscription Plans</h1>
       <h3 className="mb-16 text-gray-500">
         Choose the plan that works for you

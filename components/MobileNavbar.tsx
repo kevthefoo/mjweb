@@ -32,7 +32,7 @@ export default function MobileNavbar() {
         <ul className="flex w-full items-center justify-around">
           <li>
             <div
-              className="flex flex-col items-center justify-center gap-1"
+              className="flex flex-col items-center justify-center gap-1 cursor-pointer"
               onClick={openMenu}
             >
               <AiOutlineMenu />
@@ -70,7 +70,7 @@ export default function MobileNavbar() {
       </nav>
       {isMenuOpen && (
         <div className="fixed bottom-0 left-0 right-0 flex h-1/3 w-full flex-col items-center justify-center rounded-t-3xl bg-neutral-700 bg-opacity-95">
-          <div className="absolute right-0 top-0 mr-4 mt-4" onClick={closeMenu}>
+          <div className="absolute right-0 top-0 mr-4 mt-4 cursor-pointer" onClick={closeMenu}>
             X
           </div>
 
@@ -105,6 +105,7 @@ export default function MobileNavbar() {
               <Link
                 href="https://discord.gg/qVVFgB9UPy"
                 className="flex items-center justify-start"
+                target="_blank"
                 onClick={closeMenu}
               >
                 <FaTools />
