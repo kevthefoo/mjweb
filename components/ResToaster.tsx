@@ -22,6 +22,7 @@ export default function ResToaster() {
   return (
     <Toaster
       richColors
+      theme="dark"
       expand
       visibleToasts={1}
       position={isMobile ? "top-center" : "bottom-right"}
