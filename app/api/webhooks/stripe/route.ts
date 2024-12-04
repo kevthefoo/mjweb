@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
+import { createClerkClient } from "@clerk/backend";
 import Stripe from "stripe";
 
-import { createClerkClient } from "@clerk/backend";
-
+//Create a Clerk client
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY,
 });
 
+//Create a Stripe client
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+//Load Stripe Webhook Secret and Discord Webhook URL
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-const discordWebhookUrl =
-  "https://discord.com/api/webhooks/1312784375292624906/NmR1m_9zKgg6isuQ7bUqyyHm2n3_R0qb8XOk5z25fnyAmCAXRb5GKWgzn0P0pxFCjcGB";
+const discordWebhookUrl = process.env.DC_WEBHOOK_URL!;
 
+//Send message to the Discord channel when a new subscription is created
 async function sendDiscordMessage(message: string) {
   try {
     const response = await fetch(discordWebhookUrl, {
@@ -27,19 +29,23 @@ async function sendDiscordMessage(message: string) {
       throw new Error(`Discord API responded with status ${response.status}`);
     }
 
-    console.log("Message sent to Discord successfully");
+    console.log("\nMessage sent to Discord successfully\n");
   } catch (error) {
-    console.error("Error sending message to Discord:", error);
+    console.error(
+      "Error sending message to Discord (Error Code: 9587):",
+      error,
+    );
   }
 }
 
+//Retrieve subscription details from Stripe
 async function getSubscriptionDetails(subscriptionId: string) {
   try {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    const productID = subscription.plan.product as string;
+    const plan = subscription.items.data[0].plan;
+    const productID = plan.product as string;
     const product = await stripe.products.retrieve(productID);
 
-    const plan = subscription.items.data[0].plan;
     return {
       planName: product.name || "Unknown Plan",
       planAmount: plan.amount
@@ -49,11 +55,15 @@ async function getSubscriptionDetails(subscriptionId: string) {
       intervalCount: plan.interval_count || 1,
     };
   } catch (error) {
-    console.error("Error fetching subscription details:", error);
+    console.error(
+      "Error fetching subscription details (Error Code: 5236):",
+      error,
+    );
     return null;
   }
 }
 
+//Handle Stripe checkout events
 export async function POST(req: Request) {
   console.log("Received webhook request...");
 
@@ -69,7 +79,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Webhook Error` }, { status: 400 });
   }
 
-  // Do something with the event
+  // Do something with the completed checkout event
   if (event.type === "checkout.session.completed") {
     const subscription = event.data.object;
     const subscriptionId = subscription.subscription as string;
@@ -86,7 +96,8 @@ export async function POST(req: Request) {
         if (!subscriptionDetails) {
           throw new Error("Failed to fetch subscription details");
         }
-
+        
+        // Update the user's Clerk public metadata with the subscription details
         await clerkClient.users.updateUser(clerkUserId, {
           publicMetadata: {
             stripeCustomerId: stripeCustomerId,
@@ -99,8 +110,9 @@ export async function POST(req: Request) {
         console.log(
           `Updated Clerk user ${clerkUserId} with Stripe customer ID ${stripeCustomerId}`,
         );
-        const discordMessage = `**New Subscription!**\n**User: **${user.username}\n**Plan: **${subscriptionDetails.planName}\n**Amount: **${subscriptionDetails.planAmount}\n**Billing Cycle: **${subscriptionDetails.intervalCount} ${subscriptionDetails.interval}\n--------------------`;
 
+        // Send a message to Discord
+        const discordMessage = `**New Subscription!**\n**User: **${user.username}\n**Plan: **${subscriptionDetails.planName}\n**Amount: **${subscriptionDetails.planAmount}\n**Billing Cycle: **${subscriptionDetails.intervalCount} ${subscriptionDetails.interval}\n--------------------`;
         sendDiscordMessage(discordMessage);
       } catch (error) {
         console.error("Error updating Clerk user:", error);
