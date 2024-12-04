@@ -51,6 +51,14 @@ async function getSubscriptionDetails(subscriptionId: string) {
       planAmount: plan.amount
         ? `${(plan.amount / 100).toFixed(2)} ${plan.currency.toUpperCase()}`
         : "N/A",
+      startDay: new Date(
+        subscription.current_period_start * 1000,
+      ).toLocaleDateString(),
+      startDayTimestamp: subscription.current_period_start,
+      endDay: new Date(
+        subscription.current_period_end * 1000,
+      ).toLocaleDateString(),
+      endDayTimestamp: subscription.current_period_end,
       interval: plan.interval || "N/A",
       intervalCount: plan.interval_count || 1,
     };
@@ -103,6 +111,10 @@ export async function POST(req: Request) {
             stripeCustomerId: stripeCustomerId,
             stripePlanName: subscriptionDetails.planName,
             stripePlanAmount: subscriptionDetails.planAmount,
+            stripePlanStartDay: subscriptionDetails.startDay,
+            stripePlanStartTimestamp: subscriptionDetails.startDayTimestamp,
+            stripePlanEndDay: subscriptionDetails.endDay,
+            stripePlanEndTimestamp: subscriptionDetails.endDayTimestamp,
             stripePlanInterval: `${subscriptionDetails.intervalCount} ${subscriptionDetails.interval}`,
           },
         });

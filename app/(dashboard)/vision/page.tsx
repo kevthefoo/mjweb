@@ -25,9 +25,10 @@ export default function Vision() {
   const [description, setDescription] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { user, isLoaded } = useUser();
-  const userPublicMetadata = user?.publicMetadata;
 
-  console.log(userPublicMetadata);
+  const userPublicMetadata = user?.publicMetadata;
+  const currentTimestamp = Date.now();
+  const endDayTimestamp = userPublicMetadata?.stripePlanEndTimestamp as number;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,6 +45,11 @@ export default function Vision() {
   const handleSubmit = async () => {
     setDescription(null);
     setError(null);
+
+    if (currentTimestamp > endDayTimestamp) {
+      setError("Your subscription has expired");
+      return;
+    }
 
     try {
       const response = await fetch("/api/describe", {
