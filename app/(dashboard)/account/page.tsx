@@ -79,8 +79,8 @@ export default function Account() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-20 max-lg_tablet:flex-col">
-          <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full">
+        <div className="flex items-start justify-center gap-20 max-lg_tablet:flex-col">
+          <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full self-stretch">
             <h1 className="mb-4 text-2xl max-lg_tablet:text-xl max-sm_tablet:text-lg max-lg_mobile:text-base">
               {userSubData?.planName}
             </h1>
@@ -94,7 +94,7 @@ export default function Account() {
               })}
             </ul>
           </div>
-          <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full">
+          <div className="w-1/2 rounded-xl border-[1px] bg-gray-900 px-4 py-4 text-start max-lg_tablet:w-full self-stretch">
             <h1 className="mb-4 text-2xl max-lg_tablet:text-xl max-sm_tablet:text-lg max-lg_mobile:text-base">
               Billing & Payment
             </h1>
