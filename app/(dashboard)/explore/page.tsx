@@ -113,7 +113,128 @@ export default function Explore() {
       }
     >
       <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
-        {images.map((image, index) => (
+        {/* <div className="relative aspect-[56%] w-full border-2 border-red-500 bg-[url('https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp')] bg-cover bg-center bg-no-repeat"></div> */}
+        <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+                <Image
+          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
+          alt="d"
+          height={1000}
+          width={1000}
+          priority={true}
+          className="h-full w-full"
+        ></Image>
+        {/* {images.map((image, index) => (
           <div
             key={index}
             className="cursor-pointer border-2 border-white"
@@ -130,7 +251,7 @@ export default function Explore() {
               }
             />
           </div>
-        ))}
+        ))} */}
 
         {isModalOpen && selectedImage && (
           <div
