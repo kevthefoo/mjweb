@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+import galleryImageData from "@/data/galleryImageData/imageData.json";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -7,57 +8,67 @@ import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
 type ImageType = {
   url: string;
-  metadata: {
-    job_id: string;
-    jpg_url: string;
-    webp_url: string;
-    prompt: string;
-    tags: string;
-  };
+  job_id: string;
+  jpg_url: string;
+  webp_url: string;
+  prompt: string;
+  tags: string[];
+  object_name: string;
 };
 
 export default function Explore() {
+  console.log(typeof galleryImageData);
   const [images, setImages] = useState<ImageType[]>([]);
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
+  const containerRef = useRef(null);
+  const [columnWidth, setColumnWidth] = useState(0);
 
-  const fetchImage = async () => {
-    try {
-      const response = await fetch("/api/gallery");
-      if (!response.ok) {
-        throw new Error("Failed to fetch images");
-      }
-      const data = await response.json();
-      const image_data = data.images;
-      setImages(image_data);
-    } catch (error) {
-      console.error(error);
-      return;
-    }
+  // const fetchImage = async () => {
+  //   //   try {
+  //   //     const response = await fetch("/api/gallery");
+  //   //     if (!response.ok) {
+  //   //       throw new Error("Failed to fetch images");
+  //   //     }
+  //   //     const data = await response.json();
+  //   //     const image_data = data.images;
+  //   //     setImages(image_data);
+  //   //   } catch (error) {
+  //   //     console.error(error);
+  //   //     return;
+  //   //   }
+  //   // };
+
+  //   useEffect(() => {
+  //     fetchImage();
+  //   }, []);
+
+  //   useEffect(() => {
+  //     const handleKeyDown = (event: KeyboardEvent) => {
+  //       if (event.key === "Escape") {
+  //         closeModal();
+  //       }
+  //     };
+
+  //     if (isModalOpen) {
+  //       document.addEventListener("keydown", handleKeyDown);
+  //     } else {
+  //       document.removeEventListener("keydown", handleKeyDown);
+  //     }
+
+  //     return () => {
+  //       document.removeEventListener("keydown", handleKeyDown);
+  //     };
+  //   }, [isModalOpen]);}
+
+  const getLast32Items = (obj: Record<string, any>): Record<string, any> => {
+    const entries = Object.entries(obj);
+    const last32Entries = entries.slice(-32);
+    return Object.fromEntries(last32Entries);
   };
 
-  useEffect(() => {
-    fetchImage();
-  }, []);
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    };
-
-    if (isModalOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-    } else {
-      document.removeEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isModalOpen]);
+  const last32Items = getLast32Items(galleryImageData);
 
   const openModal = (image: ImageType) => {
     setSelectedImage(image);
@@ -80,8 +91,10 @@ export default function Explore() {
     setIsSlidePrompt(!isSlidePrompt);
   };
 
-  const handleCopyToClipboard = (prompt: string, tags: string) => {
-    const textToCopy = `${prompt}\n${tags}`;
+  const handleCopyToClipboard = (prompt: string, tags: string[]) => {
+    const tag_string = tags.join(" ").trim();
+    console.log(tag_string);
+    const textToCopy = `${prompt} ${tag_string}`;
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
@@ -104,6 +117,14 @@ export default function Explore() {
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      setColumnWidth(containerWidth / 4);
+    }
+  }, [containerRef.current]);
+
+  // aspect-[${item.ratio.replace(":","/")}]
   return (
     <section
       className={
@@ -112,128 +133,32 @@ export default function Explore() {
           : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
-      <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
-        {/* <div className="relative aspect-[56%] w-full border-2 border-red-500 bg-[url('https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp')] bg-cover bg-center bg-no-repeat"></div> */}
-        <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
-                <Image
-          src="https://d2gm97t1rhxlx0.cloudfront.net/79760127150122/29c54a9d-2382-4042-b86f-b5fa06ed6e57.webp"
-          alt="d"
-          height={1000}
-          width={1000}
-          priority={true}
-          className="h-full w-full"
-        ></Image>
+      <div
+        ref={containerRef}
+        className="relative flex flex-wrap gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2"
+      >
+        {Object.values(last32Items).map((item, index) => {
+          const divHeight = Math.round(
+            (columnWidth / item.ratio.split(":")[0]) * item.ratio.split(":")[1],
+          );
+          return (
+            <div
+              key={index}
+              style={{
+                backgroundImage: `url('https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp')`,
+                width: `${columnWidth}px`,
+                height: `${divHeight}px`,
+              }}
+              className={
+                isModalOpen
+                  ? "cursor-pointer border-2 border-white bg-cover bg-center bg-no-repeat blur-lg"
+                  : "cursor-pointer border-2 border-white bg-cover bg-center bg-no-repeat"
+              }
+              onClick={() => openModal(item)}
+            ></div>
+          );
+        })}
+
         {/* {images.map((image, index) => (
           <div
             key={index}
@@ -252,7 +177,6 @@ export default function Explore() {
             />
           </div>
         ))} */}
-
         {isModalOpen && selectedImage && (
           <div
             className="absolute bottom-0 left-0 right-0 top-0 flex h-screen w-full bg-black bg-opacity-90 py-4 max-lg_mobile:fixed max-lg_mobile:z-20 max-lg_mobile:flex-col max-lg_mobile:py-0"
@@ -268,20 +192,20 @@ export default function Explore() {
               className="relative h-full w-2/3 p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
-              <Link href={selectedImage.metadata.jpg_url} target="_blank">
+              <Link href={selectedImage.jpg_url} target="_blank">
                 <Image
-                  src={selectedImage.url}
-                  alt={selectedImage.metadata.job_id}
+                  src={`https://d2gm97t1rhxlx0.cloudfront.net/${selectedImage.object_name}.webp`}
+                  alt={selectedImage.job_id}
                   fill={true}
                   priority={true}
                   className="object-contain"
                 />
               </Link>
 
-              <Link href={selectedImage.metadata.jpg_url} target="_blank">
+              <Link href={selectedImage.jpg_url} target="_blank">
                 <Image
-                  src={selectedImage.url.replace(".webp", ".jpg")}
-                  alt={selectedImage.metadata.job_id}
+                  src={`https://d2gm97t1rhxlx0.cloudfront.net/${selectedImage.object_name}.jpg`}
+                  alt={selectedImage.job_id}
                   fill={true}
                   priority={true}
                   className="object-contain"
@@ -312,17 +236,16 @@ export default function Explore() {
                 className="mb-4 cursor-pointer text-slate-300 hover:text-slate-50"
                 onClick={() =>
                   handleCopyToClipboard(
-                    selectedImage.metadata.prompt,
-                    selectedImage.metadata.tags.replaceAll(",", " "),
+                    selectedImage.prompt,
+                    selectedImage.tags,
                   )
                 }
               >
-                {selectedImage.metadata.prompt}
+                {selectedImage.prompt}
               </p>
 
               <div className="mb-4 flex flex-wrap gap-4">
-                {selectedImage.metadata.tags
-                  .split(",")
+                {selectedImage.tags
                   .filter((tag) => tag.trim() !== "")
                   .map((tag, index) => (
                     <div

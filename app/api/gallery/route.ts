@@ -31,7 +31,6 @@ export async function GET() {
         const headCommand = new HeadObjectCommand(headParams);
         const headResponse = await client.send(headCommand);
 
-        console.log(`https://${process.env.AWS_CLOUDFRONT_URL}/${item.Key}`);
         return {
           url: `https://${process.env.AWS_CLOUDFRONT_URL}/${item.Key}`,
           metadata: headResponse.Metadata,
