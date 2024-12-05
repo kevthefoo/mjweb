@@ -73,7 +73,7 @@ async function getSubscriptionDetails(subscriptionId: string) {
 
 //Handle Stripe checkout events
 export async function POST(req: Request) {
-  console.log("Received webhook request...");
+  console.log("Received webhook request from stripe...");
 
   const body = await req.text();
   const sig = req.headers.get("stripe-signature") as string;
