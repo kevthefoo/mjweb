@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "sonner";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
@@ -66,7 +67,7 @@ export default function Explore() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
-    setIsSlidePrompt(false)
+    setIsSlidePrompt(false);
   };
 
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -146,20 +147,25 @@ export default function Explore() {
               className="relative h-full w-2/3 p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
-              <Image
-                src={selectedImage.url}
-                alt={selectedImage.metadata.job_id}
-                fill={true}
-                priority={true}
-                className="object-contain"
-              />
-              <Image
-                src={selectedImage.url.replace(".webp", ".jpg")}
-                alt={selectedImage.metadata.job_id}
-                fill={true}
-                priority={true}
-                className="object-contain"
-              />
+              <Link href={selectedImage.metadata.jpg_url} target="_blank">
+                <Image
+                  src={selectedImage.url}
+                  alt={selectedImage.metadata.job_id}
+                  fill={true}
+                  priority={true}
+                  className="object-contain"
+                />
+              </Link>
+
+              <Link href={selectedImage.metadata.jpg_url} target="_blank">
+                <Image
+                  src={selectedImage.url.replace(".webp", ".jpg")}
+                  alt={selectedImage.metadata.job_id}
+                  fill={true}
+                  priority={true}
+                  className="object-contain"
+                />
+              </Link>
             </div>
             <div
               className={

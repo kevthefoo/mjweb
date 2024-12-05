@@ -12,7 +12,7 @@ export async function GET() {
 
     const input = {
       Bucket: "mjgallery",
-      MaxKeys: 300,
+      MaxKeys: 30,
     };
 
     const command = new ListObjectsV2Command(input);
@@ -32,7 +32,7 @@ export async function GET() {
         const headResponse = await client.send(headCommand);
 
         return {
-          url: `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${item.Key}`,
+          url: `https://${process.env.AWS_CLOUDFRONT_URL}/${item.Key}`,
           metadata: headResponse.Metadata,
         };
       }) || [],
