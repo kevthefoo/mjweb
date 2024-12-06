@@ -79,15 +79,16 @@ export default function Explore() {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
       let column: number;
-
-      if (window.innerWidth > 992) {
+      if (window.innerWidth > 1280) {
         column = 5;
-      } else if (window.innerWidth > 768) {
+      } else if (window.innerWidth > 992) {
         column = 4;
-      } else if (window.innerWidth > 576) {
+      } else if (window.innerWidth > 640) {
         column = 3;
-      } else {
+      } else if (window.innerWidth > 320) {
         column = 2;
+      } else {
+        column = 1;
       }
       setColumnNumber(column);
       setColumnWidth(containerWidth / column);
