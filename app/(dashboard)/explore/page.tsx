@@ -1,8 +1,9 @@
 "use client";
-import galleryImageData from "@/data/galleryImageData/imageData.json";
+
 import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import galleryImageData from "@/data/galleryImageData/imageData.json";
+import Image from "next/image";
 import { toast } from "sonner";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
@@ -26,30 +27,14 @@ export default function Explore() {
   const [columnWidth, setColumnWidth] = useState(0);
 
   // const fetchImage = async () => {
-  //   //   try {
-  //   //     const response = await fetch("/api/gallery");
-  //   //     if (!response.ok) {
-  //   //       throw new Error("Failed to fetch images");
-  //   //     }
-  //   //     const data = await response.json();
-  //   //     const image_data = data.images;
-  //   //     setImages(image_data);
-  //   //   } catch (error) {
-  //   //     console.error(error);
-  //   //     return;
-  //   //   }
-  //   // };
 
-  //   useEffect(() => {
-  //     fetchImage();
-  //   }, []);
-
-  //   useEffect(() => {
-  //     const handleKeyDown = (event: KeyboardEvent) => {
-  //       if (event.key === "Escape") {
-  //         closeModal();
-  //       }
-  //     };
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    };
+  });
 
   //     if (isModalOpen) {
   //       document.addEventListener("keydown", handleKeyDown);
@@ -135,9 +120,9 @@ export default function Explore() {
     >
       <div
         ref={containerRef}
-        className="relative flex flex-wrap gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2"
+        className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2"
       >
-        {Object.values(last32Items).map((item, index) => {
+        {/* {Object.values(last32Items).map((item, index) => {
           const divHeight = Math.round(
             (columnWidth / item.ratio.split(":")[0]) * item.ratio.split(":")[1],
           );
@@ -146,7 +131,6 @@ export default function Explore() {
               key={index}
               style={{
                 backgroundImage: `url('https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp')`,
-                width: `${columnWidth}px`,
                 height: `${divHeight}px`,
               }}
               className={
@@ -157,17 +141,17 @@ export default function Explore() {
               onClick={() => openModal(item)}
             ></div>
           );
-        })}
+        })} */}
 
-        {/* {images.map((image, index) => (
+        {Object.values(last32Items).map((item, index) => (
           <div
             key={index}
             className="cursor-pointer border-2 border-white"
-            onClick={() => openModal(image)}
+            onClick={() => openModal(item)}
           >
             <Image
-              src={image.url}
-              alt={`Image ${index + 1}`}
+              src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
+              alt={`${item.job_id}.webp`}
               height={1000}
               width={1000}
               priority={true}
@@ -176,7 +160,8 @@ export default function Explore() {
               }
             />
           </div>
-        ))} */}
+        ))}
+
         {isModalOpen && selectedImage && (
           <div
             className="absolute bottom-0 left-0 right-0 top-0 flex h-screen w-full bg-black bg-opacity-90 py-4 max-lg_mobile:fixed max-lg_mobile:z-20 max-lg_mobile:flex-col max-lg_mobile:py-0"
