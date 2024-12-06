@@ -32,14 +32,11 @@ export default function Explore() {
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: "0px 0px 400px 0px",
   });
 
   const [columnWidth, setColumnWidth] = useState(0);
 
   const loadMoreItems = useCallback(async () => {
-    console.log("loading more items");
-
     const itemsPerPage = 32;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const newItems = Object.values(galleryImageData)
@@ -118,7 +115,6 @@ export default function Explore() {
   // Copy prompt to clipboard
   const handleCopyToClipboard = (prompt: string, tags: string[]) => {
     const tag_string = tags.join(" ").trim();
-    console.log(tag_string);
     const textToCopy = `${prompt} ${tag_string}`;
     navigator.clipboard
       .writeText(textToCopy)
@@ -183,7 +179,7 @@ export default function Explore() {
                   : sum;
               }, 0);
 
-            if (index === loadedImages.length - 1) {
+            if (index == loadedImages.length - 10) {
               return (
                 <div
                   key={index}
@@ -203,7 +199,9 @@ export default function Explore() {
                     width={1000}
                     priority={true}
                     className={
-                      isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+                      isModalOpen
+                        ? "h-full w-full object-contain blur-lg"
+                        : "h-full w-full object-contain"
                     }
                   />
                 </div>
@@ -228,7 +226,9 @@ export default function Explore() {
                   width={1000}
                   priority={true}
                   className={
-                    isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+                    isModalOpen
+                      ? "h-full w-full object-contain blur-lg"
+                      : "h-full w-full object-contain"
                   }
                 />
               </div>
