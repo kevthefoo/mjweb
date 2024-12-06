@@ -43,7 +43,6 @@ export default function Explore() {
     .slice(0, 1000);
 
   const loadMoreItems = useCallback(async () => {
-    console.log(`$Current Page: ${currentPageRef.current}`);
     const itemsPerPage = 32;
     const startIndex = (currentPageRef.current - 1) * itemsPerPage;
     const newItems = latestGalleryImageData.slice(
@@ -285,7 +284,11 @@ export default function Explore() {
               className="relative h-full w-2/3 p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
-              <Link href={selectedImage.jpg_url} target="_blank" className="select-none">
+              <Link
+                href={selectedImage.jpg_url}
+                target="_blank"
+                className="select-none"
+              >
                 <Image
                   src={`https://d2gm97t1rhxlx0.cloudfront.net/${selectedImage.object_name}.jpg`}
                   alt={selectedImage.job_id}
