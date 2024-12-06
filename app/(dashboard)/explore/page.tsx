@@ -28,11 +28,12 @@ export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loadedImages, setLoadedImages] = useState<ImageData>([]);
   const [selectedImage, setSelectedImage] = useState<ImageObject | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [columnNumber, setColumnNumber] = useState(5);
   const [columnWidth, setColumnWidth] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
+  const [isEnded, setIsEnded] = useState(false);
+  const currentPageRef = useRef(1);
   const { ref, inView } = useInView({
     threshold: 0,
   });
@@ -42,16 +43,23 @@ export default function Explore() {
     .slice(0, 1000);
 
   const loadMoreItems = useCallback(async () => {
+    console.log(`$Current Page: ${currentPageRef.current}`);
     const itemsPerPage = 32;
-    const startIndex = (currentPage - 1) * itemsPerPage;
+    const startIndex = (currentPageRef.current - 1) * itemsPerPage;
     const newItems = latestGalleryImageData.slice(
       startIndex,
       startIndex + itemsPerPage,
     );
 
+    if (newItems.length === 0) {
+      setIsEnded(true);
+      return; // No more items to load
+    }
+
     setLoadedImages((prev) => [...prev, ...newItems]);
-    setCurrentPage((prev) => prev + 1);
-  }, [currentPage, latestGalleryImageData]);
+    currentPageRef.current += 1;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load the first 32 items when the component mounts
   useEffect(() => {
@@ -61,6 +69,7 @@ export default function Explore() {
 
   useEffect(() => {
     if (inView) {
+      console.log("Loading more items");
       loadMoreItems();
     }
   }, [inView, loadMoreItems]);
@@ -202,7 +211,7 @@ export default function Explore() {
                   : sum;
               }, 0);
 
-            if (index == loadedImages.length - 10) {
+            if (index == loadedImages.length - 10 && !isEnded) {
               return (
                 <div
                   key={index}
