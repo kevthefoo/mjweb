@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import galleryImageData from "@/data/galleryImageData/imageData.json";
+import ImageWithFallback from "@/components/ImageWithFallback";
 import { toast } from "sonner";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 import { useInView } from "react-intersection-observer";
@@ -30,7 +31,7 @@ export default function Explore() {
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: "0px 0px 300px 0px",
+    rootMargin: "0px 0px 200px 0px",
   });
 
   // const [columnWidth, setColumnWidth] = useState(0);
@@ -59,6 +60,7 @@ export default function Explore() {
   // };
 
   const loadMoreItems = useCallback(async () => {
+    console.log("loading more items");
     setIsLoading(true);
     const itemsPerPage = 32;
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -66,7 +68,7 @@ export default function Explore() {
       startIndex,
       startIndex + itemsPerPage,
     );
-    await new Promise((resolve) => setTimeout(resolve, 3000)); // Pause for 10 seconds
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Pause for 10 seconds
 
     setLoadedImages((prev) => [...prev, ...newItems]);
     setCurrentPage((prev) => prev + 1);
@@ -177,7 +179,7 @@ export default function Explore() {
             className="cursor-pointer border-2 border-white"
             onClick={() => openModal(item)}
           >
-            <Image
+            <ImageWithFallback
               src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
               alt={`${item.job_id}.webp`}
               height={1000}
