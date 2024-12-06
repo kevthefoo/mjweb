@@ -28,6 +28,7 @@ export default function Explore() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState<ImageObject | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [columnNumber, setColumnNumber] = useState(5);
 
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
   const { ref, inView } = useInView({
@@ -51,6 +52,7 @@ export default function Explore() {
   useEffect(() => {
     // Load the first 32 items when the component mounts
     loadMoreItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -64,7 +66,20 @@ export default function Explore() {
   useEffect(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-      setColumnWidth(containerWidth / 5);
+
+      let column: number;
+
+      if (window.innerWidth > 992) {
+        column = 5;
+      } else if (window.innerWidth > 768) {
+        column = 4;
+      } else if (window.innerWidth > 576) {
+        column = 3;
+      } else {
+        column = 2;
+      }
+      setColumnNumber(column);
+      setColumnWidth(containerWidth / column);
     }
   }, [containerRef.current]);
 
@@ -166,11 +181,11 @@ export default function Explore() {
           }, [])
           .map((item, index) => {
             const divHeight = item.height;
-            const xOffset = columnWidth * (index % 5);
+            const xOffset = columnWidth * (index % columnNumber);
             const yOffset = loadedImages
               .slice(0, index)
               .reduce((sum, { ratio }, i) => {
-                return i % 5 === index % 5
+                return i % columnNumber === index % columnNumber
                   ? sum +
                       Math.round(
                         (columnWidth / parseInt(ratio.split(":")[0], 10)) *
