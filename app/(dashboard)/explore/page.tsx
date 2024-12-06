@@ -7,47 +7,27 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
 
-type ImageType = {
-  url: string;
+type ImageData = {
   job_id: string;
-  jpg_url: string;
-  webp_url: string;
   prompt: string;
   tags: string[];
+  webp_url: string;
+  jpg_url: string;
+  ratio: string;
   object_name: string;
+  timestamp: number;
 };
 
 export default function Explore() {
-  console.log(typeof galleryImageData);
-  const [images, setImages] = useState<ImageType[]>([]);
-  const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
+  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
   const containerRef = useRef(null);
-  const [columnWidth, setColumnWidth] = useState(0);
+  // const [columnWidth, setColumnWidth] = useState(0);
 
-  // const fetchImage = async () => {
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    };
-  });
-
-  //     if (isModalOpen) {
-  //       document.addEventListener("keydown", handleKeyDown);
-  //     } else {
-  //       document.removeEventListener("keydown", handleKeyDown);
-  //     }
-
-  //     return () => {
-  //       document.removeEventListener("keydown", handleKeyDown);
-  //     };
-  //   }, [isModalOpen]);}
-
-  const getLast32Items = (obj: Record<string, any>): Record<string, any> => {
+  const getLast32Items = (
+    obj: Record<string, ImageData>,
+  ): Record<string, ImageData> => {
     const entries = Object.entries(obj);
     const last32Entries = entries.slice(-32);
     return Object.fromEntries(last32Entries);
@@ -55,27 +35,59 @@ export default function Explore() {
 
   const last32Items = getLast32Items(galleryImageData);
 
-  const openModal = (image: ImageType) => {
+  // Calculate column width
+  // useEffect(() => {
+  //   if (containerRef.current) {
+  //     const containerWidth = containerRef.current.offsetWidth;
+  //     setColumnWidth(containerWidth / 4);
+  //   }
+  // }, [containerRef.current]);
+
+  // ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isModalOpen]);
+
+  // Open modal
+  const openModal = (image: ImageData) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
 
+  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
     setIsSlidePrompt(false);
   };
 
+  // Close modal on overlay click
   const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       closeModal();
     }
   };
 
+  // Slide up or down prompt section on mobile
   const handleSlidePrompt = () => {
     setIsSlidePrompt(!isSlidePrompt);
   };
 
+  // Copy prompt to clipboard
   const handleCopyToClipboard = (prompt: string, tags: string[]) => {
     const tag_string = tags.join(" ").trim();
     console.log(tag_string);
@@ -90,6 +102,7 @@ export default function Explore() {
       });
   };
 
+  // Disable scroll when modal is open
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
@@ -102,14 +115,8 @@ export default function Explore() {
     };
   }, [isModalOpen]);
 
-  useEffect(() => {
-    if (containerRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      setColumnWidth(containerWidth / 4);
-    }
-  }, [containerRef.current]);
+  //-----------------------------------------------------------------------------------------------------------------
 
-  // aspect-[${item.ratio.replace(":","/")}]
   return (
     <section
       className={
