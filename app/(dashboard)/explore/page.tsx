@@ -1,13 +1,14 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import galleryImageData from "@/data/galleryImageData/imageData.json";
 import Image from "next/image";
+import galleryImageData from "@/data/galleryImageData/imageData.json";
 import { toast } from "sonner";
 import { FaArrowAltCircleUp, FaArrowAltCircleDown } from "react-icons/fa";
+import { useInView } from "react-intersection-observer";
 
-type ImageData = {
+type ImageObject = {
   job_id: string;
   prompt: string;
   tags: string[];
@@ -18,59 +19,66 @@ type ImageData = {
   timestamp: number;
 };
 
-export default function Explore() {
-  const [images, setImages] = useState<Record<string, ImageData>>({});
-  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSlidePrompt, setIsSlidePrompt] = useState(false);
+type ImageData = ImageObject[];
 
-  const containerRef = useRef(null);
-  const [page, setPage] = useState(1);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+export default function Explore() {
+  const [loadedImages, setLoadedImages] = useState<ImageData>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedImage, setSelectedImage] = useState<ImageObject | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSlidePrompt, setIsSlidePrompt] = useState(false);
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: "0px 0px 300px 0px",
+  });
+
   // const [columnWidth, setColumnWidth] = useState(0);
 
-  const getLastNItems = (
-    obj: Record<string, ImageData>,
-    n: number,
-  ): Record<string, ImageData> => {
-    const entries = Object.entries(obj);
-    const lastNEntries = entries.slice(-n);
-    return Object.fromEntries(lastNEntries);
-  };
+  // const getLastNItems = (
+  //   obj: Record<string, ImageData>,
+  //   n: number,
+  // ): Record<string, ImageData> => {
+  //   const entries = Object.entries(obj);
+  //   const lastNEntries = entries.slice(-n);
+  //   return Object.fromEntries(lastNEntries);
+  // };
 
   // const last32Items = getLastNItems(galleryImageData, 32);
 
-  const loadMoreImages = useCallback(() => {
-    const newImages = getLastNItems(galleryImageData, page * 32);
-    setImages(newImages);
-  }, [page]);
+  // const getImages = (
+  //   obj: Record<string, ImageData>,
+  //   page: number,
+  //   itemsPerPage: number,
+  // ): Record<string, ImageData> => {
+  //   const entries = Object.entries(obj);
+  //   const startIndex = entries.length - page * itemsPerPage;
+  //   const endIndex = Math.max(startIndex + itemsPerPage, 0);
+  //   const pageEntries = entries.slice(startIndex, endIndex).reverse();
+  //   return Object.fromEntries(pageEntries);
+  // };
 
-  useEffect(() => {
-    loadMoreImages();
-  }, [page, loadMoreImages]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      },
-      { threshold: 1.0 },
+  const loadMoreItems = useCallback(async () => {
+    setIsLoading(true);
+    const itemsPerPage = 32;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const newItems = Object.values(galleryImageData).slice(
+      startIndex,
+      startIndex + itemsPerPage,
     );
+    await new Promise((resolve) => setTimeout(resolve, 3000)); // Pause for 10 seconds
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    setLoadedImages((prev) => [...prev, ...newItems]);
+    setCurrentPage((prev) => prev + 1);
+    setIsLoading(false);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (inView) {
+      console.log("in view");
+      loadMoreItems();
     }
-
-    observerRef.current = observer;
-
-    return () => {
-      if (observerRef.current && containerRef.current) {
-        observerRef.current.unobserve(containerRef.current);
-      }
-    };
-  }, []);
+  }, [inView, loadMoreItems]);
 
   // Calculate column width
   // useEffect(() => {
@@ -100,7 +108,7 @@ export default function Explore() {
   }, [isModalOpen]);
 
   // Open modal
-  const openModal = (image: ImageData) => {
+  const openModal = (image: ImageObject) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
@@ -162,10 +170,33 @@ export default function Explore() {
           : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
-      <div
-        ref={containerRef}
-        className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2"
-      >
+      <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
+        {loadedImages.reverse().map((item, index) => (
+          <div
+            key={index}
+            className="cursor-pointer border-2 border-white"
+            onClick={() => openModal(item)}
+          >
+            <Image
+              src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
+              alt={`${item.job_id}.webp`}
+              height={1000}
+              width={1000}
+              priority={true}
+              className={
+                isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+              }
+            />
+          </div>
+        ))}
+
+        <div
+          ref={ref}
+          className="absolute bottom-0 left-1/2 mt-12 -translate-x-1/2"
+        >
+          {isLoading ? <p>Loading more items...</p> : <p>Scroll for more</p>}
+        </div>
+
         {/* {Object.values(last32Items).map((item, index) => {
           const divHeight = Math.round(
             (columnWidth / item.ratio.split(":")[0]) * item.ratio.split(":")[1],
@@ -186,44 +217,6 @@ export default function Explore() {
             ></div>
           );
         })} */}
-
-        {/* {Object.values(last32Items).map((item, index) => (
-          <div
-            key={index}
-            className="cursor-pointer border-2 border-white"
-            onClick={() => openModal(item)}
-          >
-            <Image
-              src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
-              alt={`${item.job_id}.webp`}
-              height={1000}
-              width={1000}
-              priority={true}
-              className={
-                isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
-              }
-            />
-          </div>
-        ))} */}
-
-        {Object.values(images).map((item, index) => (
-          <div
-            key={index}
-            className="cursor-pointer border-2 border-white"
-            onClick={() => openModal(item)}
-          >
-            <Image
-              src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
-              alt={`${item.job_id}.webp`}
-              height={1000}
-              width={1000}
-              priority={true}
-              className={
-                isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
-              }
-            />
-          </div>
-        ))}
 
         {isModalOpen && selectedImage && (
           <div
