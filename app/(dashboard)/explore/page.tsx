@@ -37,16 +37,21 @@ export default function Explore() {
     threshold: 0,
   });
 
+  const latestGalleryImageData = Object.values(galleryImageData)
+    .reverse()
+    .slice(0, 1000);
+
   const loadMoreItems = useCallback(async () => {
     const itemsPerPage = 32;
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const newItems = Object.values(galleryImageData)
-      .reverse()
-      .slice(startIndex, startIndex + itemsPerPage);
+    const newItems = latestGalleryImageData.slice(
+      startIndex,
+      startIndex + itemsPerPage,
+    );
 
     setLoadedImages((prev) => [...prev, ...newItems]);
     setCurrentPage((prev) => prev + 1);
-  }, [currentPage]);
+  }, [currentPage, latestGalleryImageData]);
 
   // Load the first 32 items when the component mounts
   useEffect(() => {
