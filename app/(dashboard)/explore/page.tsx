@@ -28,7 +28,7 @@ export default function Explore() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState<ImageObject | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
   const { ref, inView } = useInView({
     threshold: 0,
@@ -37,32 +37,9 @@ export default function Explore() {
 
   const [columnWidth, setColumnWidth] = useState(0);
 
-  // const getLastNItems = (
-  //   obj: Record<string, ImageData>,
-  //   n: number,
-  // ): Record<string, ImageData> => {
-  //   const entries = Object.entries(obj);
-  //   const lastNEntries = entries.slice(-n);
-  //   return Object.fromEntries(lastNEntries);
-  // };
-
-  // const last32Items = getLastNItems(galleryImageData, 32);
-
-  // const getImages = (
-  //   obj: Record<string, ImageData>,
-  //   page: number,
-  //   itemsPerPage: number,
-  // ): Record<string, ImageData> => {
-  //   const entries = Object.entries(obj);
-  //   const startIndex = entries.length - page * itemsPerPage;
-  //   const endIndex = Math.max(startIndex + itemsPerPage, 0);
-  //   const pageEntries = entries.slice(startIndex, endIndex).reverse();
-  //   return Object.fromEntries(pageEntries);
-  // };
-
   const loadMoreItems = useCallback(async () => {
     console.log("loading more items");
-    setIsLoading(true);
+
     const itemsPerPage = 32;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const newItems = Object.values(galleryImageData)
@@ -72,8 +49,12 @@ export default function Explore() {
 
     setLoadedImages((prev) => [...prev, ...newItems]);
     setCurrentPage((prev) => prev + 1);
-    setIsLoading(false);
   }, [currentPage]);
+
+  useEffect(() => {
+    // Load the first 32 items when the component mounts
+    loadMoreItems();
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -168,67 +149,91 @@ export default function Explore() {
     <section
       className={
         isModalOpen
-          ? "no-scrollbar h-full bg-neutral-800"
-          : "h-full overflow-y-scroll bg-neutral-800"
+          ? "no-scrollbar min-h-full bg-neutral-800"
+          : "h-full overflow-y-scroll border-8 border-green-500 bg-neutral-800"
       }
     >
       <div
         ref={containerRef}
-        className="relative flex flex-row flex-wrap gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2"
+        className="relative z-30 h-full w-full gap-0 border-8 border-blue-500 pb-12"
       >
-        {loadedImages.map((item, index) => {
-          const divHeight = Math.round(
-            (columnWidth / parseInt(item.ratio.split(":")[0])) *
-              parseInt(item.ratio.split(":")[1]),
-          );
-          return (
-            <div
-              key={index}
-              className="cursor-pointer border-2 border-white"
-              onClick={() => openModal(item)}
-              style={{ height: `${divHeight}px`, width: `${columnWidth}px` }}
-            >
-              <ImageWithFallback
-                src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
-                alt={`${item.job_id}.webp`}
-                height={1000}
-                width={1000}
-                priority={true}
-                className={
-                  isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
-                }
-              />
-            </div>
-          );
-        })}
+        {loadedImages
+          .reduce<{ height: number }[]>((acc, item) => {
+            const divHeight = Math.round(
+              (columnWidth / parseInt(item.ratio.split(":")[0], 10)) *
+                parseInt(item.ratio.split(":")[1], 10),
+            );
 
-        <div
-          ref={ref}
-          className="absolute bottom-0 left-1/2 mt-12 -translate-x-1/2"
-        >
-          {isLoading ? <p>Loading more items...</p> : <p>Scroll for more</p>}
-        </div>
+            acc.push({ height: divHeight });
 
-        {/* {Object.values(last32Items).map((item, index) => {
-          const divHeight = Math.round(
-            (columnWidth / item.ratio.split(":")[0]) * item.ratio.split(":")[1],
-          );
-          return (
-            <div
-              key={index}
-              style={{
-                backgroundImage: `url('https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp')`,
-                height: `${divHeight}px`,
-              }}
-              className={
-                isModalOpen
-                  ? "cursor-pointer border-2 border-white bg-cover bg-center bg-no-repeat blur-lg"
-                  : "cursor-pointer border-2 border-white bg-cover bg-center bg-no-repeat"
-              }
-              onClick={() => openModal(item)}
-            ></div>
-          );
-        })} */}
+            return acc;
+          }, [])
+          .map((item, index) => {
+            const divHeight = item.height;
+            const xOffset = columnWidth * (index % 5);
+            const yOffset = loadedImages
+              .slice(0, index)
+              .reduce((sum, { ratio }, i) => {
+                return i % 5 === index % 5
+                  ? sum +
+                      Math.round(
+                        (columnWidth / parseInt(ratio.split(":")[0], 10)) *
+                          parseInt(ratio.split(":")[1], 10),
+                      )
+                  : sum;
+              }, 0);
+
+            if (index === loadedImages.length - 1) {
+              return (
+                <div
+                  key={index}
+                  ref={ref}
+                  className="absolute cursor-pointer border-2 border-white"
+                  onClick={() => openModal(loadedImages[index])}
+                  style={{
+                    height: `${divHeight}px`,
+                    width: `${columnWidth}px`,
+                    transform: `translateX(${xOffset}px) translateY(${yOffset}px)`,
+                  }}
+                >
+                  <ImageWithFallback
+                    src={`https://d2gm97t1rhxlx0.cloudfront.net/${loadedImages[index].object_name}.webp`}
+                    alt={`${loadedImages[index].job_id}.webp`}
+                    height={1000}
+                    width={1000}
+                    priority={true}
+                    className={
+                      isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+                    }
+                  />
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={index}
+                className="absolute cursor-pointer border-2 border-white"
+                onClick={() => openModal(loadedImages[index])}
+                style={{
+                  height: `${divHeight}px`,
+                  width: `${columnWidth}px`,
+                  transform: `translateX(${xOffset}px) translateY(${yOffset}px)`,
+                }}
+              >
+                <ImageWithFallback
+                  src={`https://d2gm97t1rhxlx0.cloudfront.net/${loadedImages[index].object_name}.webp`}
+                  alt={`${loadedImages[index].job_id}.webp`}
+                  height={1000}
+                  width={1000}
+                  priority={true}
+                  className={
+                    isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+                  }
+                />
+              </div>
+            );
+          })}
 
         {isModalOpen && selectedImage && (
           <div
