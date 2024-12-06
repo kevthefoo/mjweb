@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import galleryImageData from "@/data/galleryImageData/imageData.json";
@@ -23,6 +23,7 @@ type ImageObject = {
 type ImageData = ImageObject[];
 
 export default function Explore() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [loadedImages, setLoadedImages] = useState<ImageData>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState<ImageObject | null>(null);
@@ -34,7 +35,7 @@ export default function Explore() {
     rootMargin: "0px 0px 200px 0px",
   });
 
-  // const [columnWidth, setColumnWidth] = useState(0);
+  const [columnWidth, setColumnWidth] = useState(0);
 
   // const getLastNItems = (
   //   obj: Record<string, ImageData>,
@@ -64,10 +65,9 @@ export default function Explore() {
     setIsLoading(true);
     const itemsPerPage = 32;
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const newItems = Object.values(galleryImageData).slice(
-      startIndex,
-      startIndex + itemsPerPage,
-    );
+    const newItems = Object.values(galleryImageData)
+      .reverse()
+      .slice(startIndex, startIndex + itemsPerPage);
     await new Promise((resolve) => setTimeout(resolve, 1000)); // Pause for 10 seconds
 
     setLoadedImages((prev) => [...prev, ...newItems]);
@@ -83,12 +83,12 @@ export default function Explore() {
   }, [inView, loadMoreItems]);
 
   // Calculate column width
-  // useEffect(() => {
-  //   if (containerRef.current) {
-  //     const containerWidth = containerRef.current.offsetWidth;
-  //     setColumnWidth(containerWidth / 4);
-  //   }
-  // }, [containerRef.current]);
+  useEffect(() => {
+    if (containerRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      setColumnWidth(containerWidth / 5);
+    }
+  }, [containerRef.current]);
 
   // ESC key to close modal
   useEffect(() => {
@@ -172,25 +172,35 @@ export default function Explore() {
           : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
-      <div className="relative columns-5 gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2">
-        {loadedImages.reverse().map((item, index) => (
-          <div
-            key={index}
-            className="cursor-pointer border-2 border-white"
-            onClick={() => openModal(item)}
-          >
-            <ImageWithFallback
-              src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
-              alt={`${item.job_id}.webp`}
-              height={1000}
-              width={1000}
-              priority={true}
-              className={
-                isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
-              }
-            />
-          </div>
-        ))}
+      <div
+        ref={containerRef}
+        className="relative flex flex-row flex-wrap gap-0 max-lg_tablet:columns-4 max-rg_tablet:columns-3 max-lg_mobile:columns-2"
+      >
+        {loadedImages.map((item, index) => {
+          const divHeight = Math.round(
+            (columnWidth / parseInt(item.ratio.split(":")[0])) *
+              parseInt(item.ratio.split(":")[1]),
+          );
+          return (
+            <div
+              key={index}
+              className="cursor-pointer border-2 border-white"
+              onClick={() => openModal(item)}
+              style={{ height: `${divHeight}px`, width: `${columnWidth}px` }}
+            >
+              <ImageWithFallback
+                src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
+                alt={`${item.job_id}.webp`}
+                height={1000}
+                width={1000}
+                priority={true}
+                className={
+                  isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+                }
+              />
+            </div>
+          );
+        })}
 
         <div
           ref={ref}
@@ -235,16 +245,6 @@ export default function Explore() {
               className="relative h-full w-2/3 p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
-              <Link href={selectedImage.jpg_url} target="_blank">
-                <Image
-                  src={`https://d2gm97t1rhxlx0.cloudfront.net/${selectedImage.object_name}.webp`}
-                  alt={selectedImage.job_id}
-                  fill={true}
-                  priority={true}
-                  className="object-contain"
-                />
-              </Link>
-
               <Link href={selectedImage.jpg_url} target="_blank">
                 <Image
                   src={`https://d2gm97t1rhxlx0.cloudfront.net/${selectedImage.object_name}.jpg`}

@@ -25,6 +25,7 @@ const ImageWithFallback: React.FC<ImageWithFallbackProps> = (props) => {
       width={width}
       priority={priority}
       className={className}
+      quality={100}
       onError={() => {
         setImgSrc(image_not_found.src);
       }}
