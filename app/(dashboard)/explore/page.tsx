@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import galleryImageData from "@/data/galleryImageData/imageData.json";
 import Image from "next/image";
@@ -19,21 +19,58 @@ type ImageData = {
 };
 
 export default function Explore() {
+  const [images, setImages] = useState<Record<string, ImageData>>({});
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
+
   const containerRef = useRef(null);
+  const [page, setPage] = useState(1);
+  const observerRef = useRef<IntersectionObserver | null>(null);
   // const [columnWidth, setColumnWidth] = useState(0);
 
-  const getLast32Items = (
+  const getLastNItems = (
     obj: Record<string, ImageData>,
+    n: number,
   ): Record<string, ImageData> => {
     const entries = Object.entries(obj);
-    const last32Entries = entries.slice(-32);
-    return Object.fromEntries(last32Entries);
+    const lastNEntries = entries.slice(-n);
+    return Object.fromEntries(lastNEntries);
   };
 
-  const last32Items = getLast32Items(galleryImageData);
+  // const last32Items = getLastNItems(galleryImageData, 32);
+
+  const loadMoreImages = useCallback(() => {
+    const newImages = getLastNItems(galleryImageData, page * 32);
+    setImages(newImages);
+  }, [page]);
+
+  useEffect(() => {
+    loadMoreImages();
+  }, [page, loadMoreImages]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    observerRef.current = observer;
+
+    return () => {
+      if (observerRef.current && containerRef.current) {
+        observerRef.current.unobserve(containerRef.current);
+      }
+    };
+  }, []);
 
   // Calculate column width
   // useEffect(() => {
@@ -150,7 +187,26 @@ export default function Explore() {
           );
         })} */}
 
-        {Object.values(last32Items).map((item, index) => (
+        {/* {Object.values(last32Items).map((item, index) => (
+          <div
+            key={index}
+            className="cursor-pointer border-2 border-white"
+            onClick={() => openModal(item)}
+          >
+            <Image
+              src={`https://d2gm97t1rhxlx0.cloudfront.net/${item.object_name}.webp`}
+              alt={`${item.job_id}.webp`}
+              height={1000}
+              width={1000}
+              priority={true}
+              className={
+                isModalOpen ? "h-full w-full blur-lg" : "h-full w-full"
+              }
+            />
+          </div>
+        ))} */}
+
+        {Object.values(images).map((item, index) => (
           <div
             key={index}
             className="cursor-pointer border-2 border-white"
