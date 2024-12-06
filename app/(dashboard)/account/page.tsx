@@ -73,10 +73,10 @@ export default function Account() {
             Your Plan
           </h1>
           <div className="flex gap-4">
-            <button className="rounded-full border-[1px] px-4 py-2 hover:bg-neutral-700 max-lg_tablet:text-sm max-sm_tablet:px-2 max-sm_tablet:py-1 max-sm_tablet:text-xs">
+            <button className="select-none rounded-full border-[1px] px-4 py-2 hover:bg-neutral-700 max-lg_tablet:text-sm max-sm_tablet:px-2 max-sm_tablet:py-1 max-sm_tablet:text-xs">
               Change Plan
             </button>
-            <button className="rounded-full border-[1px] px-4 py-2 hover:bg-neutral-700 max-lg_tablet:text-sm max-sm_tablet:px-2 max-sm_tablet:py-1 max-sm_tablet:text-xs">
+            <button className="select-none rounded-full border-[1px] px-4 py-2 hover:bg-neutral-700 max-lg_tablet:text-sm max-sm_tablet:px-2 max-sm_tablet:py-1 max-sm_tablet:text-xs">
               Cancel Plan
             </button>
           </div>

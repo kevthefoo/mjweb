@@ -217,7 +217,7 @@ export default function Explore() {
                 <div
                   key={index}
                   ref={ref}
-                  className="absolute cursor-pointer border-2 border-white"
+                  className="absolute cursor-pointer select-none border-2 border-white"
                   onClick={() => openModal(loadedImages[index])}
                   style={{
                     height: `${divHeight}px`,
@@ -245,7 +245,7 @@ export default function Explore() {
             return (
               <div
                 key={index}
-                className="absolute cursor-pointer border-2 border-white"
+                className="absolute cursor-pointer select-none border-2 border-white"
                 onClick={() => openModal(loadedImages[index])}
                 style={{
                   height: `${divHeight}px`,
@@ -285,7 +285,7 @@ export default function Explore() {
               className="relative h-full w-2/3 p-4 max-lg_mobile:h-screen max-lg_mobile:w-full max-lg_mobile:p-0"
               onClick={handleOverlayClick}
             >
-              <Link href={selectedImage.jpg_url} target="_blank">
+              <Link href={selectedImage.jpg_url} target="_blank" className="select-none">
                 <Image
                   src={`https://d2gm97t1rhxlx0.cloudfront.net/${selectedImage.object_name}.jpg`}
                   alt={selectedImage.job_id}

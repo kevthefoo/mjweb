@@ -116,7 +116,7 @@ export default function Vision() {
           {imagePreview ? (
             <p className="mb-4"></p>
           ) : (
-            <p className="mb-4">Upload Your Image</p>
+            <p className="mb-4 select-none">Upload Your Image</p>
           )}
 
           {imagePreview && (

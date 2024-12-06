@@ -30,16 +30,16 @@ export default function MobileNavbar() {
     <header className="fixed bottom-0 z-10 hidden w-full border-t-2 border-white bg-neutral-900 bg-opacity-95 px-2 py-2 max-lg_mobile:flex">
       <nav className="w-full">
         <ul className="flex w-full items-center justify-around">
-          <li>
+          <li className="select-none">
             <div
-              className="flex flex-col items-center justify-center gap-1 cursor-pointer"
+              className="flex cursor-pointer flex-col items-center justify-center gap-1"
               onClick={openMenu}
             >
               <AiOutlineMenu />
               <p className="">Menu</p>
             </div>
           </li>
-          <li>
+          <li className="select-none">
             <Link
               href="/explore"
               className="flex flex-col items-center justify-center gap-1"
@@ -48,7 +48,7 @@ export default function MobileNavbar() {
               <p className="">Explore</p>
             </Link>
           </li>
-          <li>
+          <li className="select-none">
             <Link
               href="/vision"
               className="flex flex-col items-center justify-center gap-1"
@@ -57,7 +57,7 @@ export default function MobileNavbar() {
               <p className="">Vision</p>
             </Link>
           </li>
-          <li>
+          <li className="select-none">
             <Link
               href="/account"
               className="flex flex-col items-center justify-center gap-1"
@@ -69,8 +69,11 @@ export default function MobileNavbar() {
         </ul>
       </nav>
       {isMenuOpen && (
-        <div className="fixed bottom-0 left-0 right-0 flex h-1/3 w-full flex-col items-center justify-center rounded-t-3xl bg-neutral-700 bg-opacity-95">
-          <div className="absolute right-0 top-0 mr-4 mt-4 cursor-pointer" onClick={closeMenu}>
+        <div className="fixed bottom-0 left-0 right-0 flex h-1/3 w-full select-none flex-col items-center justify-center rounded-t-3xl bg-neutral-700 bg-opacity-95">
+          <div
+            className="absolute right-0 top-0 mr-4 mt-4 cursor-pointer"
+            onClick={closeMenu}
+          >
             X
           </div>
 
