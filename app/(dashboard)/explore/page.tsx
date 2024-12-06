@@ -32,7 +32,7 @@ export default function Explore() {
   const [isSlidePrompt, setIsSlidePrompt] = useState(false);
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: "0px 0px 200px 0px",
+    rootMargin: "0px 0px 400px 0px",
   });
 
   const [columnWidth, setColumnWidth] = useState(0);
@@ -150,12 +150,12 @@ export default function Explore() {
       className={
         isModalOpen
           ? "no-scrollbar min-h-full bg-neutral-800"
-          : "h-full overflow-y-scroll border-8 border-green-500 bg-neutral-800"
+          : "h-full overflow-y-scroll bg-neutral-800"
       }
     >
       <div
         ref={containerRef}
-        className="relative z-30 h-full w-full gap-0 border-8 border-blue-500 pb-12"
+        className="relative z-30 h-full w-full gap-0 pb-12"
       >
         {loadedImages
           .reduce<{ height: number }[]>((acc, item) => {
