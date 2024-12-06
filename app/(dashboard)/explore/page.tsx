@@ -26,7 +26,6 @@ const placeholderDataURL =
 
 export default function Explore() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const loadedImagesRef = useRef<any[]>([]);
   const [loadedImages, setLoadedImages] = useState<ImageData>([]);
   const [selectedImage, setSelectedImage] = useState<ImageObject | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,8 +49,7 @@ export default function Explore() {
       startIndex + itemsPerPage,
     );
 
-    loadedImagesRef.current = [...loadedImagesRef.current, ...newItems];
-    setLoadedImages([...loadedImagesRef.current]);
+    setLoadedImages((prev) => [...prev, ...newItems]);
     setCurrentPage((prev) => prev + 1);
   }, [currentPage, latestGalleryImageData]);
 
@@ -63,7 +61,6 @@ export default function Explore() {
 
   useEffect(() => {
     if (inView) {
-      console.log("in view");
       loadMoreItems();
     }
   }, [inView, loadMoreItems]);
@@ -229,6 +226,7 @@ export default function Explore() {
                         ? "h-full w-full object-contain blur-lg"
                         : "h-full w-full object-contain"
                     }
+                    index={index}
                   />
                 </div>
               );
@@ -256,6 +254,7 @@ export default function Explore() {
                       ? "h-full w-full object-contain blur-lg"
                       : "h-full w-full object-contain"
                   }
+                  index={index}
                 />
               </div>
             );
