@@ -61,11 +61,9 @@ export default function Explore() {
     }
   }, [inView, loadMoreItems]);
 
-  // Calculate column width
-  useEffect(() => {
+  const updateColumnWidth = () => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-
       let column: number;
 
       if (window.innerWidth > 992) {
@@ -80,7 +78,15 @@ export default function Explore() {
       setColumnNumber(column);
       setColumnWidth(containerWidth / column);
     }
-  }, [containerRef.current]);
+  };
+
+  useEffect(() => {
+    updateColumnWidth();
+    window.addEventListener("resize", updateColumnWidth);
+    return () => {
+      window.removeEventListener("resize", updateColumnWidth);
+    };
+  }, []);
 
   // ESC key to close modal
   useEffect(() => {
