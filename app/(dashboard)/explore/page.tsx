@@ -61,6 +61,7 @@ export default function Explore() {
     }
   }, [inView, loadMoreItems]);
 
+  // Calculate column width
   const updateColumnWidth = () => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
@@ -80,6 +81,7 @@ export default function Explore() {
     }
   };
 
+  // Update column width on window resize
   useEffect(() => {
     updateColumnWidth();
     window.addEventListener("resize", updateColumnWidth);
